@@ -1,652 +1,130 @@
-# Tools
+# Available Tools
+
+This MCP server exposes the following tools for interacting with the Karakeep API:
+
+## Bookmarks (23 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-all-bookmarks` | Retrieve all bookmarks with pagination and filtering options |
+| `create-bookmark` | Create a new bookmark |
+| `get-bookmark-by-id` | Get a specific bookmark by its ID |
+| `update-bookmark` | Update an existing bookmark |
+| `delete-bookmark` | Delete a bookmark |
+| `search-bookmarks` | Search bookmarks by query |
+| `get-bookmark-assets` | Get assets associated with a bookmark |
+| `add-bookmark-asset` | Add an asset to a bookmark |
+| `remove-bookmark-asset` | Remove an asset from a bookmark |
+| `get-bookmark-summary` | Get the AI-generated summary of a bookmark |
+| `regenerate-bookmark-summary` | Regenerate the AI summary of a bookmark |
+| `get-bookmark-highlights` | Get highlights for a bookmark |
+| `add-bookmark-highlight` | Add a highlight to a bookmark |
+| `update-bookmark-highlight` | Update an existing highlight |
+| `delete-bookmark-highlight` | Delete a highlight |
+| `get-bookmark-tags` | Get tags associated with a bookmark |
+| `add-bookmark-tag` | Add a tag to a bookmark |
+| `remove-bookmark-tag` | Remove a tag from a bookmark |
+| `get-bookmark-notes` | Get notes for a bookmark |
+| `add-bookmark-note` | Add a note to a bookmark |
+| `update-bookmark-note` | Update a bookmark note |
+| `delete-bookmark-note` | Delete a bookmark note |
+
+## Lists (9 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-all-lists` | Retrieve all lists |
+| `create-list` | Create a new list |
+| `get-list-by-id` | Get a specific list by its ID |
+| `update-list` | Update an existing list |
+| `delete-list` | Delete a list |
+| `get-list-bookmarks` | Get bookmarks in a specific list |
+| `add-bookmarks-to-list` | Add bookmarks to a list |
+| `remove-bookmarks-from-list` | Remove bookmarks from a list |
+| `get-list-stats` | Get statistics for a list |
+
+## Tags (6 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-all-tags` | Retrieve all tags |
+| `create-tag` | Create a new tag |
+| `get-tag-by-id` | Get a specific tag by its ID |
+| `update-tag` | Update an existing tag |
+| `delete-tag` | Delete a tag |
+| `get-bookmarks-with-tag` | Get all bookmarks associated with a specific tag |
+
+## Highlights (6 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-all-highlights` | Retrieve all highlights |
+| `create-highlight` | Create a new highlight |
+| `get-highlight-by-id` | Get a specific highlight by its ID |
+| `update-highlight` | Update an existing highlight |
+| `delete-highlight` | Delete a highlight |
+| `get-bookmarks-with-highlights` | Get all bookmarks that have highlights |
+
+## Users (3 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-current-user` | Get the currently authenticated user's information |
+| `get-user` | Get a specific user's information by ID |
+| `update-current-user` | Update the current user's profile information |
+
+## Admin (2 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-admin-stats` | Get administrative statistics about the Karakeep instance |
+| `get-admin-info` | Get system information and configuration |
+
+## Backups (5 tools)
+
+| Tool Name | Description |
+|-----------|-------------|
+| `get-all-backups` | Retrieve all backups |
+| `create-backup` | Create a new backup |
+| `get-backup-by-id` | Get a specific backup by its ID |
+| `delete-backup` | Delete a backup |
+| `restore-backup` | Restore from a backup |
+
+## Common Parameters
+
+Several tools accept common parameters:
+
+- `limit`: Number of items to return (default: 10, max: 100)
+- `cursor`: Pagination cursor for retrieving next/previous pages
+- `sortBy`: Field to sort results by (e.g., `createdAt`, `updatedAt`, `title`)
+- `sortOrder`: Sort order (`asc` or `desc`, default: `desc`)
+- `filters`: Object containing filter criteria specific to each tool type
 
-## User Identity Tools
+## Error Responses
 
-#### `get_user_identity`
-**Description**: Retrieve basic information about the authenticated user
+All tools return standardized error responses:
+- `ValidationError`: Invalid input parameters
+- `AuthenticationError`: Missing or invalid API key
+- `ResourceNotFoundError`: Requested resource doesn't exist
+- `RateLimitError`: API rate limit exceeded
+- `ServerError`: Internal server error
 
-**Inputs**:
-- `username` (string, required): The username to look up
+## Authentication
 
-**Returns**: User identity information as JSON string
+All tools require authentication via the `KARAKEEP_API_KEY` environment variable containing your Karakeep personal access token.
 
-#### `get_user_profile`
-**Description**: Retrieve a user by username
+## Transport Options
 
-**Inputs**:
-- `username` (string, required): The username to look up
+This server supports two transport mechanisms:
+- **STDIO**: For local MCP clients (default)
+- **HTTP Stream**: For remote MCP clients (use `stream` argument)
 
-**Returns**: User profile information as JSON string
+Examples:
+```bash
+# STDIO (local agents)
+node dist/index.js stdio
 
-#### `edit_user_profile`
-**Description**: Edit a user's profile data
-
-**Inputs**:
-- `username` (string, required): The username to edit
-- `name` (string, optional): User's name
-- `profile` (string, optional): User's profile text
-- `location` (string, optional): User's location
-- `home_page` (string, optional): User's homepage URL
-- `curr_abbr` (string, optional): Currency code (USD, GBP, EUR, CAD, AUD, JPY, CHF, MXN, BRL, NZD, SEK, ZAR)
-
-**Returns**: Updated user profile as JSON string
-
-#### `get_user_submissions`
-**Description**: Retrieve a user's submissions by username
-
-**Inputs**:
-- `username` (string, required): The username to get submissions for
-
-**Returns**: User's submissions as JSON string, including:
-- Pagination information (page, pages, items count)
-- Submissions containing:
-  - Artists (array of artist submissions)
-  - Labels (array of label submissions)
-  - Releases (array of release submissions)
-
-#### `get_user_contributions`
-**Description**: Retrieve a user's contributions by username
-
-**Inputs**:
-- `username` (string, required): The username to get contributions for
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort` (string, optional): Sort field (label, artist, title, catno, format, rating, year, added)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: User's contributions as JSON string, including:
-- Pagination information (page, pages, items count)
-- List of contributions, each containing:
-  - Release information (ID, title, artist, format, etc.)
-  - Contribution details (role, notes, etc.)
-
-## User Collection Tools
-
-#### `get_user_collection_folders`
-**Description**: Retrieve a list of folders in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-
-**Returns**: List of collection folders as JSON string
-
-#### `create_user_collection_folder`
-**Description**: Create a new folder in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `name` (string, required): The name of the new folder
-
-**Returns**: Created folder information as JSON string
-
-#### `get_user_collection_folder`
-**Description**: Retrieve metadata about a folder in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to retrieve
-
-**Returns**: Folder metadata as JSON string
-
-#### `edit_user_collection_folder`
-**Description**: Edit a folder in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to edit
-- `name` (string, required): The new name for the folder
-
-**Returns**: Updated folder information as JSON string
-
-#### `delete_user_collection_folder`
-**Description**: Delete a folder from a user's collection (must be empty)
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to delete
-
-**Returns**: Success status as JSON string
-
-#### `get_user_collection_items`
-**Description**: Retrieve a list of items in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to retrieve items from
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort` (string, optional): Sort field (added, artist, catno, format, label, rating, title, year)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of collection items as JSON string
-
-#### `add_release_to_user_collection_folder`
-**Description**: Add a release to a folder in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to add to
-- `release_id` (number, required): The ID of the release to add
-
-**Returns**: Added release information as JSON string
-
-#### `delete_release_from_user_collection_folder`
-**Description**: Remove a release from a user's collection folder
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder to remove from
-- `release_id` (number, required): The ID of the release to remove
-- `instance_id` (integer, required): The instance ID of the release in the collection
-
-**Returns**: Success status as JSON string
-
-#### `find_release_in_user_collection`
-**Description**: Find a release in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to search
-- `release_id` (number, required): The ID of the release to find
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: Release information as JSON string
-
-#### `rate_release_in_user_collection`
-**Description**: Rate a release in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder containing the release
-- `release_id` (number, required): The ID of the release to rate
-- `instance_id` (integer, required): The instance ID of the release in the collection
-- `rating` (integer, required): Rating value (1-5)
-
-**Returns**: Updated rating information as JSON string
-
-#### `move_release_in_user_collection`
-**Description**: Move a release in a user's collection to another folder
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the source folder
-- `release_id` (number, required): The ID of the release to move
-- `instance_id` (integer, required): The instance ID of the release in the collection
-- `destination_folder_id` (number, required): The ID of the destination folder
-
-**Returns**: Success status as JSON string
-
-#### `get_user_collection_custom_fields`
-**Description**: Retrieve a list of user-defined collection notes fields
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-
-**Returns**: List of custom fields as JSON string
-
-#### `edit_user_collection_custom_field_value`
-**Description**: Edit a custom field value for a release in a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-- `folder_id` (integer, required): The ID of the folder containing the release
-- `release_id` (number, required): The ID of the release to edit
-- `instance_id` (number, required): The instance ID of the release in the collection
-- `field_id` (integer, required): The ID of the custom field to edit
-- `value` (string, required): The new value for the custom field
-
-**Returns**: Success status as JSON string
-
-#### `get_user_collection_value`
-**Description**: Returns the minimum, median, and maximum value of a user's collection
-
-**Inputs**:
-- `username` (string, required): The username whose collection to access
-
-**Returns**: Collection value statistics as JSON string
-
-## Database Tools
-
-#### `get_release`
-**Description**: Get a release
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release to get
-- `curr_abbr` (string, optional): Currency code
-
-**Returns**: Release information as JSON string
-
-#### `get_release_rating`
-**Description**: Get a release's rating for a given user
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release
-- `username` (string, required): The username to get the rating for
-
-**Returns**: Rating information as JSON string
-
-#### `edit_release_rating`
-**Description**: Updates the release's rating for a given user
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release
-- `username` (string, required): The username to update the rating for
-- `rating` (integer, required): Rating value (1-5)
-
-**Returns**: Updated rating information as JSON string
-
-#### `delete_release_rating`
-**Description**: Deletes the release's rating for a given user
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release
-- `username` (string, required): The username to delete the rating for
-
-**Returns**: Success status as JSON string
-
-#### `get_release_community_rating`
-**Description**: Get a release's community rating average and count
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release
-
-**Returns**: Community rating information as JSON string
-
-#### `get_master_release`
-**Description**: Get a master release
-
-**Inputs**:
-- `master_id` (number, required): The ID of the master release
-
-**Returns**: Master release information as JSON string
-
-#### `get_master_release_versions`
-**Description**: Retrieves a list of all Releases that are versions of this master
-
-**Inputs**:
-- `master_id` (integer, required): The ID of the master release to get versions for
-- `page` (integer, optional, minimum: 1): The page number to retrieve
-- `per_page` (integer, optional, minimum: 1, maximum: 100): The number of items per page
-- `sort` (string, optional): The field to sort by. Possible values:
-  - `released`
-  - `title`
-  - `format`
-  - `label`
-  - `catno`
-  - `country`
-- `sort_order` (string, optional): The sort order. Possible values:
-  - `asc`
-  - `desc`
-- `format` (string, optional): Filter by format
-- `label` (string, optional): Filter by label
-- `released` (string, optional): Filter by release year
-- `country` (string, optional): Filter by country
-
-**Returns**: List of master release versions as JSON string, including pagination, versions, filters, and filter facets
-
-#### `get_artist`
-**Description**: Get an artist
-
-**Inputs**:
-- `artist_id` (number, required): The ID of the artist
-
-**Returns**: Artist information as JSON string
-
-#### `get_artist_releases`
-**Description**: Get an artist's releases
-
-**Inputs**:
-- `artist_id` (number, required): The ID of the artist
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of artist releases as JSON string
-
-#### `get_label`
-**Description**: Get a label
-
-**Inputs**:
-- `label_id` (number, required): The ID of the label
-
-**Returns**: Label information as JSON string
-
-#### `get_label_releases`
-**Description**: Get releases associated with a label
-
-**Inputs**:
-- `label_id` (number, required): The ID of the label
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of releases as JSON string
-
-#### `search`
-**Description**: Search the Discogs database
-
-**Inputs**:
-- `q` (string, optional): Search query
-- `type` (string, optional): Search type (artist, label, master, release)
-- `title` (string, optional): Title search
-- `release_title` (string, optional): Release title search
-- `credit` (string, optional): Credit search
-- `artist` (string, optional): Artist search
-- `anv` (string, optional): Artist name variation search
-- `label` (string, optional): Label search
-- `genre` (string, optional): Genre search
-- `style` (string, optional): Style search
-- `country` (string, optional): Country search
-- `year` (string, optional): Year search
-- `format` (string, optional): Format search
-- `catno` (string, optional): Catalog number search
-- `barcode` (string, optional): Barcode search
-- `track` (string, optional): Track search
-- `submitter` (string, optional): Submitter search
-- `contributor` (string, optional): Contributor search
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-
-**Returns**: Search results as JSON string
-
-#### `get_release_rating_by_user`
-**Description**: Retrieves the release's rating for a given user
-
-**Inputs**:
-- `release_id` (number, required): The ID of the release
-- `username` (string, required): The username to get the rating for
-
-**Returns**: Rating information as JSON string
-
-## Marketplace Tools
-
-#### `get_user_inventory`
-**Description**: Returns the list of listings in a user's inventory
-
-**Inputs**:
-- `username` (string, required): The username whose inventory to get
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `status` (string, optional): Filter by status (For Sale, Expired, Draft, Pending)
-- `sort` (string, optional): Sort field (listed, price, item, artist, label, catno, audio, status, location)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of inventory items as JSON string, including:
-- Pagination information (page, pages, items count)
-- List of listings, each containing:
-  - Listing details (ID, status, condition, price)
-  - Release information (ID, description, artist, title)
-  - Seller information (ID, username, stats)
-  - Shipping and payment details
-
-#### `get_marketplace_listing`
-**Description**: Get a listing from the marketplace
-
-**Inputs**:
-- `listing_id` (integer, required): The ID of the listing to get
-- `curr_abbr` (string, optional): Currency code (USD, GBP, EUR, CAD, AUD, JPY, CHF, MXN, BRL, NZD, SEK, ZAR)
-
-**Returns**: Listing information as JSON string
-
-#### `create_marketplace_listing`
-**Description**: Create a new marketplace listing
-
-**Inputs**:
-- `release_id` (integer, required): The ID of the release to list
-- `condition` (string, required): Condition of the item (Mint (M), Near Mint (NM or M-), Very Good Plus (VG+), Very Good (VG), Good Plus (G+), Good (G), Fair (F), Poor (P))
-- `price` (number, required): Price of the item
-- `status` (string, required): Status of the listing (For Sale, Expired, Draft)
-- `sleeve_condition` (string, optional): Condition of the sleeve (Mint (M), Near Mint (NM or M-), Very Good Plus (VG+), Very Good (VG), Good Plus (G+), Good (G), Fair (F), Poor (P), Generic, Not Graded, No Cover)
-- `format_quantity` (number, optional): Number of items
-- `comments` (string, optional): Comments about the listing
-- `allow_offers` (boolean, optional): Whether to allow offers
-- `external_id` (string, optional): External ID for the listing
-- `location` (string, optional): Location of the item
-- `weight` (number, optional): Weight of the item
-
-**Returns**: Created listing information as JSON string
-
-#### `update_marketplace_listing`
-**Description**: Update a marketplace listing
-
-**Inputs**:
-- `listing_id` (integer, required): The ID of the listing to update
-- `release_id` (integer, required): The ID of the release
-- `condition` (string, required): Condition of the item (Mint (M), Near Mint (NM or M-), Very Good Plus (VG+), Very Good (VG), Good Plus (G+), Good (G), Fair (F), Poor (P))
-- `price` (number, required): Price of the item
-- `status` (string, required): Status of the listing (For Sale, Expired, Draft)
-- `sleeve_condition` (string, optional): Condition of the sleeve (Mint (M), Near Mint (NM or M-), Very Good Plus (VG+), Very Good (VG), Good Plus (G+), Good (G), Fair (F), Poor (P), Generic, Not Graded, No Cover)
-- `format_quantity` (number, optional): Number of items
-- `comments` (string, optional): Comments about the listing
-- `allow_offers` (boolean, optional): Whether to allow offers
-- `external_id` (string, optional): External ID for the listing
-- `location` (string, optional): Location of the item
-- `weight` (number, optional): Weight of the item
-
-**Returns**: Success message as string
-
-#### `delete_marketplace_listing`
-**Description**: Delete a marketplace listing
-
-**Inputs**:
-- `listing_id` (integer, required): The ID of the listing to delete
-
-**Returns**: Success message as string
-
-#### `get_marketplace_order`
-**Description**: Get a marketplace order
-
-**Inputs**:
-- `order_id` (number, required): The ID of the order to get
-
-**Returns**: Order information as JSON string, including:
-- Order details (ID, status, creation date)
-- Items with release information and pricing
-- Shipping information
-- Seller and buyer details
-- Total amount and fees
-
-#### `edit_marketplace_order`
-**Description**: Edit a marketplace order
-
-**Inputs**:
-- `order_id` (number, required): The ID of the order to edit
-- `status` (string, optional): New status of the order (New Order, Buyer Contacted, Invoice Sent, Payment Pending, Payment Received, Shipped, Refund Sent, Cancelled (Non-Paying Buyer), Cancelled (Item Unavailable), Cancelled (Per Buyer's Request))
-- `shipping` (number, optional): New shipping cost
-
-**Returns**: Updated order information as JSON string, including:
-- Updated order details
-- Items with release information and pricing
-- Shipping information
-- Seller and buyer details
-- Total amount and fees
-
-#### `get_marketplace_orders`
-**Description**: Get a list of marketplace orders
-
-**Inputs**:
-- `status` (string, optional): Filter by order status (New Order, Buyer Contacted, Invoice Sent, Payment Pending, Payment Received, Shipped, Refund Sent, Cancelled (Non-Paying Buyer), Cancelled (Item Unavailable), Cancelled (Per Buyer's Request))
-- `created_after` (string, optional): Filter orders created after this date (YYYY-MM-DD)
-- `created_before` (string, optional): Filter orders created before this date (YYYY-MM-DD)
-- `archived` (boolean, optional): Filter by archived status
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort` (string, optional): Sort field (id, buyer, created, status, last_activity)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of orders as JSON string, including:
-- Pagination information (page, pages, items count)
-- List of orders, each containing:
-  - Order details (ID, status, creation date)
-  - Items with release information and pricing
-  - Shipping information
-  - Seller and buyer details
-  - Total amount and fees
-
-#### `get_marketplace_order_messages`
-**Description**: Get a list of an order's messages
-
-**Inputs**:
-- `order_id` (number, required): The ID of the order to get messages for
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of messages as JSON string, including:
-- Pagination information (page, pages, items count)
-- List of messages, each containing:
-  - Message details (timestamp, content, type, subject)
-  - Order reference information
-  - Sender information (ID, username, avatar)
-  - Status information
-  - Actor information
-
-#### `create_marketplace_order_message`
-**Description**: Adds a new message to the order's message log
-
-**Inputs**:
-- `order_id` (number, required): The ID of the order to add a message to
-- `message` (string, optional): The message content
-- `status` (string, optional): New status of the order (New Order, Buyer Contacted, Invoice Sent, Payment Pending, Payment Received, Shipped, Refund Sent, Cancelled (Non-Paying Buyer), Cancelled (Item Unavailable), Cancelled (Per Buyer's Request))
-
-**Returns**: Created message information as JSON string, including:
-- Message details (timestamp, content, type, subject)
-- Order reference information
-- Sender information (ID, username, avatar)
-- Status information
-- Actor information
-
-#### `get_marketplace_release_stats`
-**Description**: Retrieve marketplace statistics for the provided Release ID
-
-**Inputs**:
-- `release_id` (number, required, minimum: 1): The ID of the release to get stats for
-- `curr_abbr` (string, optional): Currency code (USD, GBP, EUR, CAD, AUD, JPY, CHF, MXN, BRL, NZD, SEK, ZAR)
-
-**Returns**: Release statistics as JSON string, including:
-- `lowest_price`: The lowest price for the release (with currency and value)
-- `num_for_sale`: The number of items for sale
-- `blocked_from_sale`: Whether the release is blocked from sale
-
-## User Lists Tools
-
-#### `get_user_lists`
-**Description**: Get a user's lists
-
-**Inputs**:
-- `username` (string, required): The username whose lists to get
-
-**Returns**: List of user lists as JSON string
-
-#### `get_list`
-**Description**: Get a list by ID
-
-**Inputs**:
-- `list_id` (number, required): The ID of the list to get
-
-**Returns**: List information as JSON string
-
-## User Wantlist Tools
-
-#### `get_user_wantlist`
-**Description**: Returns the list of releases in a user's wantlist
-
-**Inputs**:
-- `username` (string, required): The username whose wantlist to get
-- `page` (integer, optional): Page number (minimum: 1)
-- `per_page` (integer, optional): Items per page (minimum: 1, maximum: 100)
-- `sort` (string, optional): Sort field (added, artist, catno, format, label, rating, title, year)
-- `sort_order` (string, optional): Sort direction (asc, desc)
-
-**Returns**: List of wantlist items as JSON string
-
-#### `add_to_wantlist`
-**Description**: Add a release to a user's wantlist
-
-**Inputs**:
-- `username` (string, required): The username whose wantlist to access
-- `release_id` (number, required): The ID of the release to add
-- `notes` (string, optional): Notes about the release
-- `rating` (integer, optional): Rating value (1-5)
-
-**Returns**: Added wantlist item information as JSON string
-
-#### `edit_item_in_wantlist`
-**Description**: Edit a release in a user's wantlist
-
-**Inputs**:
-- `username` (string, required): The username whose wantlist to access
-- `release_id` (number, required): The ID of the release to edit
-- `notes` (string, optional): Notes about the release
-- `rating` (integer, optional): Rating value (1-5)
-
-**Returns**: Updated wantlist item information as JSON string
-
-#### `delete_item_in_wantlist`
-**Description**: Delete a release from a user's wantlist
-
-**Inputs**:
-- `username` (string, required): The username whose wantlist to access
-- `release_id` (number, required): The ID of the release to delete
-
-**Returns**: Success status as JSON string
-
-## Media Tools
-
-#### `fetch_image`
-**Description**: Fetch an image by URL
-
-**Inputs**:
-- `url` (string, required): The URL of the image to fetch
-
-**Returns**: Image content
-
-## Inventory Export Tools
-
-#### `inventory_export`
-**Description**: Request an export of your inventory as a CSV
-
-**Inputs**: None
-
-**Returns**: Success message as string
-
-#### `get_inventory_exports`
-**Description**: Get a list of all recent exports of your inventory
-
-**Inputs**: None
-
-**Returns**: List of inventory exports as JSON string, including:
-- Pagination information (page, pages, items count)
-- List of exports, each containing:
-  - ID
-  - Status
-  - Creation timestamp
-  - URL
-  - Finished timestamp
-  - Download URL
-  - Filename
-
-#### `get_inventory_export`
-**Description**: Get details about an inventory export
-
-**Inputs**:
-- `id` (number, required): The ID of the inventory export
-
-**Returns**: Inventory export details as JSON string, including:
-- ID
-- Status
-- Creation timestamp
-- URL
-- Finished timestamp
-- Download URL
-- Filename
-
-#### `download_inventory_export`
-**Description**: Download an inventory export as a CSV
-
-**Inputs**:
-- `id` (number, required): The ID of the inventory export to download
-
-**Returns**: The inventory export as a CSV string
-
+# HTTP Stream (remote agents)
+node dist/index.js stream
+# Available at http://localhost:3001/mcp
+```
