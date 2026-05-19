@@ -1,0 +1,141 @@
+import { FastMCP } from 'fastmcp';
+import { TagsService } from '../services/tags.ts';
+import { z } from 'zod';
+
+/**
+ * Registers tags-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerTagsTools(server: FastMCP): void {
+  // Get all tags
+  server.tool(
+    'get-all-tags',
+    {
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ limit, cursor }) => {
+      const result = await TagsService.getAllTags({ limit, cursor });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Create a new tag
+  server.tool(
+    'create-tag',
+    {
+      label: z.string().min(1)
+    },
+    async ({ label }) => {
+      const tagData = { label };
+      const result = await TagsService.createTag(tagData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get single tag
+  server.tool(
+    'get-tag',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await TagsService.getTag(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Update tag
+  server.tool(
+    'update-tag',
+    {
+      id: z.string().uuid(),
+      label: z.string().min(1).optional()
+    },
+    async ({ id, label }) => {
+      const tagData = {
+        ...(label !== undefined && { label })
+      };
+      
+      const result = await TagsService.updateTag(id, tagData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Delete tag
+  server.tool(
+    'delete-tag',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await TagsService.deleteTag(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get bookmarks with tag
+  server.tool(
+    'get-tag-bookmarks',
+    {
+      id: z.string().uuid(),
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ id, archived, favourited, sortOrder, limit, cursor }) => {
+      const result = await TagsService.getTagBookmarks(id, {
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}

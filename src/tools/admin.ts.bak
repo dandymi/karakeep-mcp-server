@@ -1,0 +1,46 @@
+import { FastMCP, Tool } from 'fastmcp';
+import { AdminService } from '../services/admin.ts';
+import { z } from 'zod';
+
+export const getAdminStatsTool: Tool<{}, z.ZodObject<{}>> = {
+  name: 'get-admin-stats',
+  description: 'Get system stats',
+  parameters: z.object({}),
+  execute: async () => {
+    const result = await AdminService.getStats();
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+};
+
+export const getAdminInfoTool: Tool<{}, z.ZodObject<{}>> = {
+  name: 'get-admin-info',
+  description: 'Get system info',
+  parameters: z.object({}),
+  execute: async () => {
+    const result = await AdminService.getInfo();
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+};
+
+/**
+ * Registers admin-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerAdminTools(server: FastMCP): void {
+  server.addTool(getAdminStatsTool);
+  server.addTool(getAdminInfoTool);
+}

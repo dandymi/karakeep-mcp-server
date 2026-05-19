@@ -1,0 +1,92 @@
+{
+  "name": "karakeep-mcp-server",
+  "version": "0.5.6",
+  "description": "MCP server for Karakeep",
+  "license": "MIT",
+  "author": "Hermes Agent <hermes@nousresearch.com>",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "bin": {
+    "karakeep-mcp-server": "dist/index.js"
+  },
+  "repository": {
+    "url": "https://github.com/hermes-agent/karakeep-mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/hermes-agent/karakeep-mcp-server/issues"
+  },
+  "keywords": [
+    "Karakeep",
+    "MCP"
+  ],
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "build:watch": "pnpm build --watch",
+    "build:types": "tsc -p tsconfig.build.json",
+    "postbuild": "shx chmod +x dist/*.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "dev:stdio": "pnpm run dev stdio",
+    "dev:stream": "pnpm run dev stream",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
+    "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest watch",
+    "type-check": "tsc --noEmit",
+    "version:check": "node .github/scripts/check-version.js",
+    "version:sync": "node scripts/sync-version.js",
+    "changeset:version": "changeset version && pnpm version:sync && git add src/version.ts && git commit --amend --no-edit",
+    "changeset:tag": "changeset tag"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "dotenv": "github:cswkim/dotenv",
+    "fastmcp": "^4.0.0",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.28.1",
+    "@eslint/js": "^10.0.1",
+    "@svitejs/changesets-changelog-github-compact": "^1.2.0",
+    "@types/node": "^25.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "@vitest/coverage-v8": "^4.0.4",
+    "cross-env": "^10.0.0",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "get-port-please": "^3.1.2",
+    "prettier": "^3.5.3",
+    "shx": "^0.4.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.29.0",
+    "vitest": "^4.0.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "@hono/node-server": ">=1.19.10",
+      "express-rate-limit": ">=8.2.2",
+      "koa": "^3.1.2",
+      "glob": ">=10.5.0",
+      "hono": ">=4.12.4",
+      "js-yaml": ">=4.1.1",
+      "minimatch": ">=10.2.3",
+      "rollup": ">=4.59.0",
+      "qs": ">=6.14.2"
+    }
+  }
+}

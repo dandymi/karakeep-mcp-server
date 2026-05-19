@@ -1,0 +1,119 @@
+import { FastMCP, Tool } from 'fastmcp';
+import { BackupsService } from '../services/backups.ts';
+import { z } from 'zod';
+
+/**
+ * Registers backups-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerBackupsTools(server: FastMCP): void {
+  // Get all backups
+  const getAllBackupsTool: Tool<import('fastmcp').FastMCPSessionAuth, z.ZodType<any>, any> = {
+    name: 'get-all-backups',
+    description: 'Get all backups with pagination',
+    parameters: z.object({
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    }),
+    canAccess: () => true,
+    execute: async ({ limit, cursor }) => {
+      const result = await BackupsService.getAllBackups({ limit, cursor });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Create backup
+  const createBackupTool: Tool<import('fastmcp').FastMCPSessionAuth, z.ZodType<any>, any> = {
+    name: 'create-backup',
+    description: 'Create a new backup',
+    parameters: z.object({}),
+    canAccess: () => true,
+    execute: async () => {
+      const result = await BackupsService.createBackup();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get backup by ID
+  const getBackupByIdTool: Tool<import('fastmcp').FastMCPSessionAuth, z.ZodType<any>, any> = {
+    name: 'get-backup-by-id',
+    description: 'Get a specific backup by ID',
+    parameters: z.object({
+      id: z.string()
+    }),
+    canAccess: () => true,
+    execute: async ({ id }) => {
+      const result = await BackupsService.getBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Delete backup
+  const deleteBackupTool: Tool<import('fastmcp').FastMCPSessionAuth, z.ZodType<any>, any> = {
+    name: 'delete-backup',
+    description: 'Delete a backup by ID',
+    parameters: z.object({
+      id: z.string()
+    }),
+    canAccess: () => true,
+    execute: async ({ id }) => {
+      const result = await BackupsService.deleteBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Restore backup
+  const restoreBackupTool: Tool<import('fastmcp').FastMCPSessionAuth, z.ZodType<any>, any> = {
+    name: 'restore-backup',
+    description: 'Restore a backup by ID',
+    parameters: z.object({
+      id: z.string()
+    }),
+    canAccess: () => true,
+    execute: async ({ id }) => {
+      const result = await BackupsService.restoreBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  server.addTool(getAllBackupsTool);
+  server.addTool(createBackupTool);
+  server.addTool(getBackupByIdTool);
+  server.addTool(deleteBackupTool);
+  server.addTool(restoreBackupTool);
+}

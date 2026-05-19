@@ -1,0 +1,188 @@
+import { FastMCP } from 'fastmcp';
+import { ListsService } from '../services/lists.ts';
+import { z } from 'zod';
+
+/**
+ * Registers lists-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerListsTools(server: FastMCP): void {
+  // Get all lists
+  server.tool(
+    'get-all-lists',
+    {
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ limit, cursor }) => {
+      const result = await ListsService.getAllLists({ limit, cursor });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Create a new list
+  server.tool(
+    'create-list',
+    {
+      title: z.string().min(1),
+      description: z.string().optional()
+    },
+    async ({ title, description }) => {
+      const listData = {
+        title,
+        ...(description !== undefined && { description })
+      };
+      
+      const result = await ListsService.createList(listData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get single list
+  server.tool(
+    'get-list',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await ListsService.getList(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Update list
+  server.tool(
+    'update-list',
+    {
+      id: z.string().uuid(),
+      title: z.string().min(1).optional(),
+      description: z.string().optional()
+    },
+    async ({ id, title, description }) => {
+      const listData = {
+        ...(title !== undefined && { title }),
+        ...(description !== undefined && { description })
+      };
+      
+      const result = await ListsService.updateList(id, listData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Delete list
+  server.tool(
+    'delete-list',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await ListsService.deleteList(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get bookmarks in list
+  server.tool(
+    'get-list-bookmarks',
+    {
+      id: z.string().uuid(),
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ id, archived, favourited, sortOrder, limit, cursor }) => {
+      const result = await ListsService.getListBookmarks(id, {
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Add bookmarks to list
+  server.tool(
+    'add-bookmarks-to-list',
+    {
+      id: z.string().uuid(),
+      bookmarkIds: z.array(z.string().uuid())
+    },
+    async ({ id, bookmarkIds }) => {
+      const result = await ListsService.addBookmarksToList(id, bookmarkIds);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Remove bookmarks from list
+  server.tool(
+    'remove-bookmarks-from-list',
+    {
+      id: z.string().uuid(),
+      bookmarkIds: z.array(z.string().uuid())
+    },
+    async ({ id, bookmarkIds }) => {
+      const result = await ListsService.removeBookmarksFromList(id, bookmarkIds);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}

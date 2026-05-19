@@ -1,0 +1,495 @@
+import { FastMCP, Tool } from 'fastmcp';
+import { BookmarksService } from '../services/bookmarks.ts';
+import { z } from 'zod';
+
+/**
+ * Registers bookmarks-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerBookmarksTools(server: FastMCP): void {
+  // Get all bookmarks
+  const getAllBookmarksTool: Tool<{
+    archived?: boolean;
+    favourited?: boolean;
+    sortOrder?: 'asc' | 'desc';
+    limit?: number;
+    cursor?: string;
+    includeContent?: boolean;
+  }, any> = {
+    name: 'get-all-bookmarks',
+    description: 'Get all bookmarks with filtering and pagination',
+    parameters: z.object({
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional(),
+      includeContent: z.boolean().optional()
+    }),
+    execute: async ({ archived, favourited, sortOrder, limit, cursor, includeContent }) => {
+      const result = await BookmarksService.getAllBookmarks({
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor,
+        includeContent
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Create bookmark
+  const createBookmarkTool: Tool<{
+    url: string;
+    title?: string;
+    description?: string;
+    content?: string;
+    favourited?: boolean;
+    archived?: boolean;
+    tagIds?: string[];
+  }, any> = {
+    name: 'create-bookmark',
+    description: 'Create a new bookmark',
+    parameters: z.object({
+      url: z.string().url(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      content: z.string().optional(),
+      favourited: z.boolean().optional(),
+      archived: z.boolean().optional(),
+      tagIds: z.array(z.string()).optional()
+    }),
+    execute: async ({ url, title, description, content, favourited, archived, tagIds }) => {
+      const result = await BookmarksService.createBookmark({
+        url,
+        title,
+        description,
+        content,
+        favourited,
+        archived,
+        tagIds
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get bookmark by ID
+  const getBookmarkByIdTool: Tool<{ id: string }, any> = {
+    name: 'get-bookmark-by-id',
+    description: 'Get a specific bookmark by ID',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.getBookmarkById(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Update bookmark
+  const updateBookmarkTool: Tool<{
+    id: string;
+    url?: string;
+    title?: string;
+    description?: string;
+    content?: string;
+    favourited?: boolean;
+    archived?: boolean;
+    tagIds?: string[];
+  }, any> = {
+    name: 'update-bookmark',
+    description: 'Update an existing bookmark',
+    parameters: z.object({
+      id: z.string(),
+      url: z.string().url().optional(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      content: z.string().optional(),
+      favourited: z.boolean().optional(),
+      archived: z.boolean().optional(),
+      tagIds: z.array(z.string()).optional()
+    }),
+    execute: async ({ id, url, title, description, content, favourited, archived, tagIds }) => {
+      const result = await BookmarksService.updateBookmark(id, {
+        url,
+        title,
+        description,
+        content,
+        favourited,
+        archived,
+        tagIds
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Delete bookmark
+  const deleteBookmarkTool: Tool<{ id: string }, any> = {
+    name: 'delete-bookmark',
+    description: 'Delete a bookmark by ID',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.deleteBookmark(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Search bookmarks
+  const searchBookmarksTool: Tool<{
+    query: string;
+    archived?: boolean;
+    favourited?: boolean;
+    sortOrder?: 'asc' | 'desc';
+    limit?: number;
+    cursor?: string;
+  }, any> = {
+    name: 'search-bookmarks',
+    description: 'Search bookmarks by query',
+    parameters: z.object({
+      query: z.string(),
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    }),
+    execute: async ({ query, archived, favourited, sortOrder, limit, cursor }) => {
+      const result = await BookmarksService.searchBookmarks(query, {
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get bookmark assets
+  const getBookmarkAssetsTool: Tool<{ id: string }, any> = {
+    name: 'get-bookmark-assets',
+    description: 'Get assets for a bookmark',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.getBookmarkAssets(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Add asset to bookmark
+  const addBookmarkAssetTool: Tool<{
+    bookmarkId: string;
+    assetId: string;
+  }, any> = {
+    name: 'add-bookmark-asset',
+    description: 'Add an asset to a bookmark',
+    parameters: z.object({
+      bookmarkId: z.string(),
+      assetId: z.string()
+    }),
+    execute: async ({ bookmarkId, assetId }) => {
+      const result = await BookmarksService.addBookmarkAsset(bookmarkId, assetId);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Remove asset from bookmark
+  const removeBookmarkAssetTool: Tool<{
+    bookmarkId: string;
+    assetId: string;
+  }, any> = {
+    name: 'remove-bookmark-asset',
+    description: 'Remove an asset from a bookmark',
+    parameters: z.object({
+      bookmarkId: z.string(),
+      assetId: z.string()
+    }),
+    execute: async ({ bookmarkId, assetId }) => {
+      const result = await BookmarksService.removeBookmarkAsset(bookmarkId, assetId);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get bookmark summary
+  const getBookmarkSummaryTool: Tool<{ id: string }, any> = {
+    name: 'get-bookmark-summary',
+    description: 'Get AI-generated summary for a bookmark',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.getBookmarkSummary(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Regenerate bookmark summary
+  const regenerateBookmarkSummaryTool: Tool<{ id: string }, any> = {
+    name: 'regenerate-bookmark-summary',
+    description: 'Regenerate AI-generated summary for a bookmark',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.regenerateBookmarkSummary(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get bookmark highlights
+  const getBookmarkHighlightsTool: Tool<{ id: string }, any> = {
+    name: 'get-bookmark-highlights',
+    description: 'Get highlights for a bookmark',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.getBookmarkHighlights(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Add highlight to bookmark
+  const addBookmarkHighlightTool: Tool<{
+    bookmarkId: string;
+    content: string;
+  }, any> = {
+    name: 'add-bookmark-highlight',
+    description: 'Add a highlight to a bookmark',
+    parameters: z.object({
+      bookmarkId: z.string(),
+      content: z.string()
+    }),
+    execute: async ({ bookmarkId, content }) => {
+      const result = await BookmarksService.addBookmarkHighlight(bookmarkId, content);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Update bookmark highlight
+  const updateBookmarkHighlightTool: Tool<{
+    id: string;
+    content: string;
+  }, any> = {
+    name: 'update-bookmark-highlight',
+    description: 'Update a bookmark highlight',
+    parameters: z.object({
+      id: z.string(),
+      content: z.string()
+    }),
+    execute: async ({ id, content }) => {
+      const result = await BookmarksService.updateBookmarkHighlight(id, content);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Delete bookmark highlight
+  const deleteBookmarkHighlightTool: Tool<{ id: string }, any> = {
+    name: 'delete-bookmark-highlight',
+    description: 'Delete a bookmark highlight',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.deleteBookmarkHighlight(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Get bookmark tags
+  const getBookmarkTagsTool: Tool<{ id: string }, any> = {
+    name: 'get-bookmark-tags',
+    description: 'Get tags for a bookmark',
+    parameters: z.object({
+      id: z.string()
+    }),
+    execute: async ({ id }) => {
+      const result = await BookmarksService.getBookmarkTags(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Add tag to bookmark
+  const addBookmarkTagTool: Tool<{
+    bookmarkId: string;
+    tagId: string;
+  }, any> = {
+    name: 'add-bookmark-tag',
+    description: 'Add a tag to a bookmark',
+    parameters: z.object({
+      bookmarkId: z.string(),
+      tagId: z.string()
+    }),
+    execute: async ({ bookmarkId, tagId }) => {
+      const result = await BookmarksService.addBookmarkTag(bookmarkId, tagId);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  // Remove tag from bookmark
+  const removeBookmarkTagTool: Tool<{
+    bookmarkId: string;
+    tagId: string;
+  }, any> = {
+    name: 'remove-bookmark-tag',
+    description: 'Remove a tag from a bookmark',
+    parameters: z.object({
+      bookmarkId: z.string(),
+      tagId: z.string()
+    }),
+    execute: async ({ bookmarkId, tagId }) => {
+      const result = await BookmarksService.removeBookmarkTag(bookmarkId, tagId);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  };
+
+  server.addTool(getAllBookmarksTool);
+  server.addTool(createBookmarkTool);
+  server.addTool(getBookmarkByIdTool);
+  server.addTool(updateBookmarkTool);
+  server.addTool(deleteBookmarkTool);
+  server.addTool(searchBookmarksTool);
+  server.addTool(getBookmarkAssetsTool);
+  server.addTool(addBookmarkAssetTool);
+  server.addTool(removeBookmarkAssetTool);
+  server.addTool(getBookmarkSummaryTool);
+  server.addTool(regenerateBookmarkSummaryTool);
+  server.addTool(getBookmarkHighlightsTool);
+  server.addTool(addBookmarkHighlightTool);
+  server.addTool(updateBookmarkHighlightTool);
+  server.addTool(deleteBookmarkHighlightTool);
+  server.addTool(getBookmarkTagsTool);
+  server.addTool(addBookmarkTagTool);
+  server.addTool(removeBookmarkTagTool);
+}

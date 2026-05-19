@@ -1,0 +1,103 @@
+import { FastMCP } from 'fastmcp';
+import { BackupsService } from '../services/backups.ts';
+import { z } from 'zod';
+
+/**
+ * Registers backups-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerBackupsTools(server: FastMCP): void {
+  // Get all backups
+  server.tool(
+    'get-all-backups',
+    {
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ limit, cursor }) => {
+      const result = await BackupsService.getAllBackups({ limit, cursor });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Create backup
+  server.tool(
+    'create-backup',
+    {},
+    async () => {
+      const result = await BackupsService.createBackup();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get single backup
+  server.tool(
+    'get-backup',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BackupsService.getBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Delete backup
+  server.tool(
+    'delete-backup',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BackupsService.deleteBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Restore backup
+  server.tool(
+    'restore-backup',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BackupsService.restoreBackup(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}

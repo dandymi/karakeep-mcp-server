@@ -1,0 +1,70 @@
+import { FastMCP } from 'fastmcp';
+import { UsersService } from '../services/users.ts';
+import { z } from 'zod';
+
+/**
+ * Registers users-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerUsersTools(server: FastMCP): void {
+  // Get current user
+  server.tool(
+    'get-current-user',
+    {},
+    async () => {
+      const result = await UsersService.getCurrentUser();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get user by ID
+  server.tool(
+    'get-user',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await UsersService.getUser(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Update current user
+  server.tool(
+    'update-current-user',
+    {
+      name: z.string().optional(),
+      email: z.string().email().optional()
+    },
+    async ({ name, email }) => {
+      const userData = {
+        ...(name !== undefined && { name }),
+        ...(email !== undefined && { email })
+      };
+      
+      const result = await UsersService.updateCurrentUser(userData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}

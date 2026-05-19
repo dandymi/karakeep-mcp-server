@@ -1,0 +1,352 @@
+import { FastMCP } from 'fastmcp';
+import { BookmarksService } from '../services/bookmarks.ts';
+import { z } from 'zod';
+
+/**
+ * Registers bookmarks-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerBookmarksTools(server: FastMCP): void {
+  // Get all bookmarks
+  server.tool(
+    'get-all-bookmarks',
+    {
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional(),
+      includeContent: z.boolean().optional()
+    },
+    async ({ archived, favourited, sortOrder, limit, cursor, includeContent }) => {
+      const result = await BookmarksService.getAllBookmarks({
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor,
+        includeContent
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Create a new bookmark
+  server.tool(
+    'create-bookmark',
+    {
+      url: z.string().url(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      content: z.string().optional(),
+      favourited: z.boolean().optional(),
+      archived: z.boolean().optional()
+    },
+    async ({ url, title, description, content, favourited, archived }) => {
+      const bookmarkData = {
+        url,
+        ...(title !== undefined && { title }),
+        ...(description !== undefined && { description }),
+        ...(content !== undefined && { content }),
+        ...(favourited !== undefined && { favourited }),
+        ...(archived !== undefined && { archived })
+      };
+      
+      const result = await BookmarksService.createBookmark(bookmarkData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Search bookmarks
+  server.tool(
+    'search-bookmarks',
+    {
+      query: z.string().min(1),
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ query, archived, favourited, sortOrder, limit, cursor }) => {
+      const result = await BookmarksService.searchBookmarks(query, {
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Check if URL exists
+  server.tool(
+    'url-exists',
+    {
+      url: z.string().url()
+    },
+    async ({ url }) => {
+      const result = await BookmarksService.urlExists(url);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get single bookmark
+  server.tool(
+    'get-bookmark',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.getBookmark(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Delete bookmark
+  server.tool(
+    'delete-bookmark',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.deleteBookmark(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Update bookmark
+  server.tool(
+    'update-bookmark',
+    {
+      id: z.string().uuid(),
+      url: z.string().url().optional(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      content: z.string().optional(),
+      favourited: z.boolean().optional(),
+      archived: z.boolean().optional()
+    },
+    async ({ id, url, title, description, content, favourited, archived }) => {
+      const bookmarkData = {
+        ...(url !== undefined && { url }),
+        ...(title !== undefined && { title }),
+        ...(description !== undefined && { description }),
+        ...(content !== undefined && { content }),
+        ...(favourited !== undefined && { favourited }),
+        ...(archived !== undefined && { archived })
+      };
+      
+      const result = await BookmarksService.updateBookmark(id, bookmarkData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Summarize bookmark
+  server.tool(
+    'summarize-bookmark',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.summarizeBookmark(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Attach tags to bookmark
+  server.tool(
+    'attach-tags-to-bookmark',
+    {
+      id: z.string().uuid(),
+      tagIds: z.array(z.string().uuid())
+    },
+    async ({ id, tagIds }) => {
+      const result = await BookmarksService.attachTags(id, tagIds);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Detach tags from bookmark
+  server.tool(
+    'detach-tags-from-bookmark',
+    {
+      id: z.string().uuid(),
+      tagIds: z.array(z.string().uuid())
+    },
+    async ({ id, tagIds }) => {
+      const result = await BookmarksService.detachTags(id, tagIds);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get bookmark lists
+  server.tool(
+    'get-bookmark-lists',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.getBookmarkLists(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get bookmark highlights
+  server.tool(
+    'get-bookmark-highlights',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.getBookmarkHighlights(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Attach asset to bookmark
+  server.tool(
+    'attach-asset-to-bookmark',
+    {
+      id: z.string().uuid(),
+      // Note: For file uploads, we'd need a more complex implementation
+      // This is a placeholder for now
+      assetId: z.string().uuid()
+    },
+    async ({ id, assetId }) => {
+      const result = await BookmarksService.attachAsset(id, { assetId });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Replace asset on bookmark
+  server.tool(
+    'replace-asset-on-bookmark',
+    {
+      id: z.string().uuid(),
+      assetId: z.string().uuid()
+    },
+    async ({ id, assetId }) => {
+      const result = await BookmarksService.replaceAsset(id, { assetId });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Detach asset from bookmark
+  server.tool(
+    'detach-asset-from-bookmark',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await BookmarksService.detachAsset(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}

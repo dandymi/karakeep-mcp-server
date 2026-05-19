@@ -1,0 +1,144 @@
+import { FastMCP } from 'fastmcp';
+import { HighlightsService } from '../services/highlights.ts';
+import { z } from 'zod';
+
+/**
+ * Registers highlights-related MCP tools with the server
+ * @param server The FastMCP server instance
+ */
+export function registerHighlightsTools(server: FastMCP): void {
+  // Get all highlights
+  server.tool(
+    'get-all-highlights',
+    {
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ limit, cursor }) => {
+      const result = await HighlightsService.getAllHighlights({ limit, cursor });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Create a new highlight
+  server.tool(
+    'create-highlight',
+    {
+      content: z.string().min(1),
+      bookmarkId: z.string().uuid()
+    },
+    async ({ content, bookmarkId }) => {
+      const highlightData = { content, bookmarkId };
+      const result = await HighlightsService.createHighlight(highlightData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get single highlight
+  server.tool(
+    'get-highlight',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await HighlightsService.getHighlight(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Update highlight
+  server.tool(
+    'update-highlight',
+    {
+      id: z.string().uuid(),
+      content: z.string().min(1).optional(),
+      bookmarkId: z.string().uuid().optional()
+    },
+    async ({ id, content, bookmarkId }) => {
+      const highlightData = {
+        ...(content !== undefined && { content }),
+        ...(bookmarkId !== undefined && { bookmarkId })
+      };
+      
+      const result = await HighlightsService.updateHighlight(id, highlightData);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Delete highlight
+  server.tool(
+    'delete-highlight',
+    {
+      id: z.string().uuid()
+    },
+    async ({ id }) => {
+      const result = await HighlightsService.deleteHighlight(id);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+
+  // Get bookmarks with highlight
+  server.tool(
+    'get-highlight-bookmarks',
+    {
+      id: z.string().uuid(),
+      archived: z.boolean().optional(),
+      favourited: z.boolean().optional(),
+      sortOrder: z.enum(['asc', 'desc']).optional(),
+      limit: z.number().int().min(1).max(100).optional(),
+      cursor: z.string().optional()
+    },
+    async ({ id, archived, favourited, sortOrder, limit, cursor }) => {
+      const result = await HighlightsService.getHighlightBookmarks(id, {
+        archived,
+        favourited,
+        sortOrder,
+        limit,
+        cursor
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      };
+    }
+  );
+}
