@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite
 
 ### Changed
-- Forked and adapted from discogs-mcp-server
+- Initial release of Karakeep MCP Server
 - Updated all API endpoints to Karakeep
 - Changed environment variable from DISCOGS_PERSONAL_ACCESS_TOKEN to KARAKEEP_API_KEY
 - Updated documentation and tool descriptions

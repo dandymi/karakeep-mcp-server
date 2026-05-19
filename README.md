@@ -2,7 +2,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/dandymi/karakeep-mcp-server)](https://github.com/dandymi/karakeep-mcp-server/releases)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/dandymi/karakeep-mcp-server/.github%2Fworkflows%2Fcheck-pr.yml)](https://github.com/dandymi/karakeep-mcp-server/actions/workflows/check-pr.yml)
 [![NPM Downloads](https://img.shields.io/npm/d18m/karakeep-mcp-server)](https://www.npmjs.com/package/karakeep-mcp-server)
-[![Sponsor](https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/cswkim)
+[![Sponsor](https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/dandymi)
 
 # Karakeep MCP Server
 

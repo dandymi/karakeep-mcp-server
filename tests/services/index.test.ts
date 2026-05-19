@@ -1,29 +1,29 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createDiscogsError } from '../../src/errors.ts';
-import { DiscogsService, RequestOptions } from '../../src/services/index.js';
+import { createKarakeepError } from '../../src/errors.ts';
+import { KarakeepService, RequestOptions } from '../../src/services/index';
 
 // Mock the config
 vi.mock('../../src/config.js', () => ({
   config: {
-    discogs: {
-      apiUrl: process.env.DISCOGS_API_URL,
-      mediaType: process.env.DISCOGS_MEDIA_TYPE,
-      personalAccessToken: process.env.DISCOGS_PERSONAL_ACCESS_TOKEN,
-      userAgent: process.env.DISCOGS_USER_AGENT,
+    karakeep: {
+      apiUrl: process.env.KARAKEEP_API_URL,
+      mediaType: process.env.KARAKEEP_MEDIA_TYPE,
+      apiKey: process.env.KARAKEEP_API_KEY,
+      userAgent: process.env.KARAKEEP_USER_AGENT,
       defaultPerPage: 5,
     },
   },
 }));
 
 // Mock the errors module
-vi.mock('../../src/errors.js', () => ({
-  createDiscogsError: vi.fn(
-    (status, body) => new Error(`Discogs error ${status}: ${JSON.stringify(body)}`),
+vi.mock('../../src/errors', () => ({
+  createKarakeepError: vi.fn(
+    (status, body) => new Error(`Karakeep error ${status}: ${JSON.stringify(body)}`),
   ),
 }));
 
 // Create a concrete implementation of the abstract class for testing
-class TestDiscogsService extends DiscogsService {
+class TestKarakeepService extends KarakeepService {
   constructor() {
     super('/test');
   }
@@ -33,8 +33,8 @@ class TestDiscogsService extends DiscogsService {
   }
 }
 
-describe('DiscogsService', () => {
-  let service: TestDiscogsService;
+describe('KarakeepService', () => {
+  let service: TestKarakeepService;
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -43,7 +43,7 @@ describe('DiscogsService', () => {
     global.fetch = fetchMock;
 
     // Create instance of test service
-    service = new TestDiscogsService();
+    service = new TestKarakeepService();
   });
 
   afterEach(() => {
@@ -54,7 +54,7 @@ describe('DiscogsService', () => {
     expect(service['baseUrl']).toBe('https://api.karakeep.app/api/v1/test');
     expect(service['headers']).toEqual({
       Accept: 'application/json',
-      Authorization: 'Discogs token=test-token',
+      Authorization: 'Bearer test-token',
       'Content-Type': 'application/json',
       'User-Agent': 'TestApp/1.0',
     });
@@ -134,7 +134,7 @@ describe('DiscogsService', () => {
     await expect(service.testRequest('/unknown')).rejects.toThrow();
 
     // Verify error was created
-    expect(createDiscogsError).toHaveBeenCalledWith(404, errorBody);
+    expect(createKarakeepError).toHaveBeenCalledWith(404, errorBody);
   });
 
   it('should handle non-JSON responses', async () => {

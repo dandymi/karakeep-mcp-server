@@ -1,5 +1,5 @@
 // Mock imports need to go before all other imports
-import '../mocks/discogsService';
+import '../mocks/karakeepService';
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import { OAuthService } from '../../src/services/oauth';

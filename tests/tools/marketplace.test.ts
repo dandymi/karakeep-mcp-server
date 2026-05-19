@@ -56,7 +56,7 @@ const mockListing = {
   seller: {
     id: 12345,
     username: 'TestSeller',
-    avatar_url: 'https://i.discogs.com/avatar.jpg',
+    avatar_url: 'https://example.com/avatar.jpg',
     stats: {
       rating: '100.0',
       stars: 5,
@@ -79,9 +79,9 @@ const mockListing = {
     images: [
       {
         type: 'primary',
-        uri: 'https://i.discogs.com/test.jpg',
-        resource_url: 'https://i.discogs.com/test.jpg',
-        uri150: 'https://i.discogs.com/test-150.jpg',
+        uri: 'https://example.com/test.jpg',
+        resource_url: 'https://example.com/test.jpg',
+        uri150: 'https://example.com/test-150.jpg',
         width: 500,
         height: 500,
       },
@@ -89,7 +89,7 @@ const mockListing = {
     artist: 'Test Artist',
     title: 'Test Album',
     format: 'LP, Album',
-    thumbnail: 'https://i.discogs.com/thumb.jpg',
+    thumbnail: 'https://example.com/thumb.jpg',
     stats: {
       community: {
         in_wantlist: 10,
@@ -1258,7 +1258,7 @@ describe('Marketplace Tools', () => {
             id: 12345,
             resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
             username: 'TestSeller',
-            avatar_url: 'https://i.discogs.com/avatar.jpg',
+            avatar_url: 'https://example.com/avatar.jpg',
           },
           status_id: 1,
           actor: {
@@ -1410,7 +1410,7 @@ describe('Marketplace Tools', () => {
         id: 12345,
         resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
         username: 'TestSeller',
-        avatar_url: 'https://i.discogs.com/avatar.jpg',
+        avatar_url: 'https://example.com/avatar.jpg',
       },
       status_id: 1,
       actor: {

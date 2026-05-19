@@ -1,5 +1,5 @@
 export const mockImageUrl =
-  'https://i.discogs.com/FBk9IQZaBDL89xDzjiT7fZgxYcIVZtt_yp76pFWFew8/rs:fit/g:sm/q:90/h:593/w:593/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUxODcx/MjctMTM4Njg5MDg1/NC04Mzk1LmpwZWc.jpeg';
+  'https://example.com/FBk9IQZaBDL89xDzjiT7fZgxYcIVZtt_yp76pFWFew8/rs:fit/g:sm/q:90/h:593/w:593/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUxODcx/MjctMTM4Njg5MDg1/NC04Mzk1LmpwZWc.jpeg';
 
 export const mockImageContent = {
   type: 'image',
