@@ -48,7 +48,7 @@ export class KarakeepValidationFailedError extends KarakeepError {
     let message = 'Validation failed';
 
     if (response && typeof response === 'object' && response !== null) {
-      const detail = (response as { detail?: Array<{ msg?: string> } }).detail;
+      const detail = (response as { detail?: Array<{ msg?: string }> }).detail;
       if (Array.isArray(detail) && detail.length > 0 && detail[0].msg) {
         message = detail[0].msg;
       }
