@@ -16,10 +16,10 @@
     "karakeep-mcp-server": "dist/index.js"
   },
   "repository": {
-    "url": "https://github.com/hermes-agent/karakeep-mcp-server"
+    "url": "https://github.com/dandymi/karakeep-mcp-server"
   },
   "bugs": {
-    "url": "https://github.com/hermes-agent/karakeep-mcp-server/issues"
+    "url": "https://github.com/dandymi/karakeep-mcp-server/issues"
   },
   "keywords": [
     "Karakeep",

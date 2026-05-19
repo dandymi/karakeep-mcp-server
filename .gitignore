@@ -1,0 +1,52 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.lerna-debug.log*
+
+# Build outputs
+dist/
+build/
+.coverage
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MCP specific
+.mcp/
+.mcp-*/
+mcp-*/
+mcp_server_*
+
+# Test coverage
+coverage/
+.lcov*
+*.lcov
+
+# Misc
+.npm
+.yarn
+.pnpm-debug.log
+.dockerignore

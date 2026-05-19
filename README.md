@@ -1,6 +1,6 @@
-[![License](https://img.shields.io/github/license/cswkim/karakeep-mcp-server)](LICENSE)
-[![GitHub Release](https://img.shields.io/github/v/release/cswkim/karakeep-mcp-server)](https://github.com/cswkim/karakeep-mcp-server/releases)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cswkim/karakeep-mcp-server/.github%2Fworkflows%2Fcheck-pr.yml)](https://github.com/cswkim/karakeep-mcp-server/actions/workflows/check-pr.yml)
+[![License](https://img.shields.io/github/license/dandymi/karakeep-mcp-server)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/dandymi/karakeep-mcp-server)](https://github.com/dandymi/karakeep-mcp-server/releases)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/dandymi/karakeep-mcp-server/.github%2Fworkflows%2Fcheck-pr.yml)](https://github.com/dandymi/karakeep-mcp-server/actions/workflows/check-pr.yml)
 [![NPM Downloads](https://img.shields.io/npm/d18m/karakeep-mcp-server)](https://www.npmjs.com/package/karakeep-mcp-server)
 [![Sponsor](https://img.shields.io/static/v1?label=sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/cswkim)
 
@@ -43,7 +43,7 @@ Check out the list of available tools: [TOOLS.md](TOOLS.md)
 
 ## Caveats
 
-- The [Karakeep API documentation](https://www.discogs.com/developers) is not perfect and some endpoints may not be fully documented or may have inconsistencies.
+- The [Karakeep API documentation](https://www.karakeep.app/developers) is not perfect and some endpoints may not be fully documented or may have inconsistencies.
 - Due to the vast number of API endpoints and response types, it's not feasible to verify type safety for every possible response. Please report any type-related issues you encounter.
 - This MCP server allows for editing data in your Karakeep collection. Please use with caution and verify your actions before executing them.
 - The Karakeep API `per_page` default is `50`, which can be too much data for some clients to process effectively, so within this project a `karakeep.config.defaultPerPage` value has been set to `5`. You can request more data in your prompts, but be aware that some clients may struggle with larger responses.
@@ -61,7 +61,7 @@ Check out the list of available tools: [TOOLS.md](TOOLS.md)
 3. Set the following required environment variables in your `.env`:
    - `KARAKEEP_API_KEY`: Your Karakeep personal access token
 
-To get your Karakeep personal access token, go to your [Karakeep Settings > Developers](https://www.discogs.com/settings/developers) page and find your token or generate a new one. **_DO NOT SHARE YOUR TOKEN_**. OAuth support will be added in a future release.
+To get your Karakeep personal access token, go to your [Karakeep Settings > Developers](https://www.karakeep.app/settings/developers) page and find your token or generate a new one. **_DO NOT SHARE YOUR TOKEN_**. OAuth support will be added in a future release.
 
 The other environment variables in `.env.example` are optional and have sensible defaults, so you don't need to set them unless you have specific requirements.
 
@@ -224,7 +224,7 @@ Get to the Chat `Settings`. In the `Program` tab there will be a dropdown with a
 }
 ```
 
-After you Save, in the `Program` tab there should now be an `mcp/discogs` toggle to enable the server. Within every chat box there is an `Integrations` menu where you can also enable mcp servers.
+After you Save, in the `Program` tab there should now be an `mcp/karakeep` toggle to enable the server. Within every chat box there is an `Integrations` menu where you can also enable mcp servers.
 
 ## TODO
 
