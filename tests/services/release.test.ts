@@ -113,7 +113,7 @@ describe('ReleaseService', () => {
       });
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -151,7 +151,7 @@ describe('ReleaseService', () => {
       expect(service['request']).toHaveBeenCalledWith('/123/rating/testuser');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -197,7 +197,7 @@ describe('ReleaseService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -211,7 +211,7 @@ describe('ReleaseService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -225,7 +225,7 @@ describe('ReleaseService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -280,7 +280,7 @@ describe('ReleaseService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -290,7 +290,7 @@ describe('ReleaseService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -300,7 +300,7 @@ describe('ReleaseService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -330,7 +330,7 @@ describe('ReleaseService', () => {
       expect(service['request']).toHaveBeenCalledWith('/123/rating');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);

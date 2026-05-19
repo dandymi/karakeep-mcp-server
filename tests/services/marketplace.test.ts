@@ -122,7 +122,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -138,7 +138,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -167,7 +167,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -177,7 +177,7 @@ describe('MarketplaceService', () => {
       );
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -187,7 +187,7 @@ describe('MarketplaceService', () => {
       );
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -219,7 +219,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -255,7 +255,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -271,7 +271,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -288,7 +288,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -367,7 +367,7 @@ describe('MarketplaceService', () => {
       expect(service['request']).toHaveBeenCalledWith('/orders/123');
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -377,7 +377,7 @@ describe('MarketplaceService', () => {
       );
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -385,7 +385,7 @@ describe('MarketplaceService', () => {
       await expect(service.getOrder({ order_id: 123 })).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -468,7 +468,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -481,7 +481,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -494,7 +494,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -615,7 +615,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -623,7 +623,7 @@ describe('MarketplaceService', () => {
       await expect(service.getOrders({})).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -702,7 +702,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -712,7 +712,7 @@ describe('MarketplaceService', () => {
       );
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -722,7 +722,7 @@ describe('MarketplaceService', () => {
       );
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -792,7 +792,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -805,7 +805,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -818,7 +818,7 @@ describe('MarketplaceService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -864,7 +864,7 @@ describe('MarketplaceService', () => {
       });
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);

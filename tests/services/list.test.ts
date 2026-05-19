@@ -62,7 +62,7 @@ describe('ListService', () => {
       expect(service['request']).toHaveBeenCalledWith('/123');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -70,7 +70,7 @@ describe('ListService', () => {
       await expect(service.getList({ list_id: 999 })).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);

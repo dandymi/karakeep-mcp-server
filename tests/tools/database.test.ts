@@ -1417,7 +1417,7 @@ describe('Database Tools', () => {
             tools: [
               {
                 name: 'search',
-                description: 'Issue a search query to the Discogs database',
+                description: 'Issue a search query to the Karakeep database',
                 inputSchema: {
                   $schema: 'http://json-schema.org/draft-07/schema#',
                   type: 'object',

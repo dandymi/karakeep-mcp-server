@@ -9,7 +9,7 @@ import type { Artist, ArtistReleases } from '../../src/types/artist';
 const mockArtist: Artist = {
   id: 123,
   name: 'Test Artist',
-  resource_url: 'https://discogs.test/artist/123',
+  resource_url: 'https://karakeep.test/artist/123',
   realname: 'Test Real Name',
   profile: 'Test artist profile',
   urls: ['https://example.com/artist'],
@@ -101,7 +101,7 @@ describe('ArtistService', () => {
       expect(service['request']).toHaveBeenCalledWith('/123');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -170,7 +170,7 @@ describe('ArtistService', () => {
       });
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);

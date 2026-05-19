@@ -62,7 +62,7 @@ describe('UserProfileService', () => {
       expect(service['request']).toHaveBeenCalledWith('/testuser');
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -72,7 +72,7 @@ describe('UserProfileService', () => {
       );
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -117,7 +117,7 @@ describe('UserProfileService', () => {
       });
     });
 
-    it('should handle Discogs authentication errors properly', async () => {
+    it('should handle Karakeep authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -130,7 +130,7 @@ describe('UserProfileService', () => {
       ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
-    it('should handle Discogs permission errors properly', async () => {
+    it('should handle Karakeep permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -143,7 +143,7 @@ describe('UserProfileService', () => {
       ).rejects.toThrow('KarakeepPermissionError');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);

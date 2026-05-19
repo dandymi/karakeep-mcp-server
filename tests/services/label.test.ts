@@ -9,7 +9,7 @@ import type { Label, LabelReleases } from '../../src/types/label';
 const mockLabel: Label = {
   id: 123,
   name: 'Test Label',
-  resource_url: 'https://discogs.test/label/123',
+  resource_url: 'https://karakeep.test/label/123',
   contact_info: 'test@example.com',
   profile: 'Test label profile',
   urls: ['https://example.com/label'],
@@ -97,7 +97,7 @@ describe('LabelService', () => {
       expect(service['request']).toHaveBeenCalledWith('/123');
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
@@ -166,7 +166,7 @@ describe('LabelService', () => {
       });
     });
 
-    it('should handle Discogs resource not found errors properly', async () => {
+    it('should handle Karakeep resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
       discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
