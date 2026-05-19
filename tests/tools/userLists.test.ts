@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { ListService } from '../../src/services/list.js';
 import { UserListsService } from '../../src/services/user/lists.js';
 import { getListTool, getUserListsTool } from '../../src/tools/userLists.js';
@@ -53,8 +53,8 @@ describe('User Lists Tools', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/users/testuser/lists?page=1&per_page=50',
-            last: 'https://api.discogs.com/users/testuser/lists?page=1&per_page=50',
+            first: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1&per_page=50',
+            last: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1&per_page=50',
           },
         },
         lists: [
@@ -65,8 +65,8 @@ describe('User Lists Tools', () => {
             public: true,
             date_added: '2024-01-01T00:00:00Z',
             date_changed: '2024-01-01T00:00:00Z',
-            resource_url: 'https://api.discogs.com/users/testuser/lists/123',
-            uri: 'https://www.discogs.com/users/testuser/lists/123',
+            resource_url: 'https://api.karakeep.app/api/v1/users/testuser/lists/123',
+            uri: 'https://www.karakeep.app/users/testuser/lists/123',
             items: 0,
           },
         ],
@@ -98,7 +98,7 @@ describe('User Lists Tools', () => {
       });
     });
 
-    it('handles get_user_lists DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_lists KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -107,7 +107,7 @@ describe('User Lists Tools', () => {
           });
 
           vi.spyOn(UserListsService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserListsTool);
@@ -196,26 +196,26 @@ describe('User Lists Tools', () => {
         user: {
           id: 456,
           username: 'testuser',
-          avatar_url: 'https://api.discogs.com/users/testuser/avatar.jpg',
-          resource_url: 'https://api.discogs.com/users/testuser',
+          avatar_url: 'https://api.karakeep.app/api/v1/users/testuser/avatar.jpg',
+          resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
         },
         name: 'Test List',
         description: 'Test description',
         public: true,
         date_added: '2024-01-01T00:00:00Z',
         date_changed: '2024-01-01T00:00:00Z',
-        resource_url: 'https://api.discogs.com/users/testuser/lists/123',
-        uri: 'https://www.discogs.com/users/testuser/lists/123',
-        image_url: 'https://api.discogs.com/users/testuser/lists/123/image.jpg',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/lists/123',
+        uri: 'https://www.karakeep.app/users/testuser/lists/123',
+        image_url: 'https://api.karakeep.app/api/v1/users/testuser/lists/123/image.jpg',
         items: [
           {
             id: 789,
             type: 'release',
             comment: 'Test comment',
             display_title: 'Test Release',
-            image_url: 'https://api.discogs.com/releases/789/image.jpg',
-            uri: 'https://www.discogs.com/release/789',
-            resource_url: 'https://api.discogs.com/releases/789',
+            image_url: 'https://api.karakeep.app/api/v1/releases/789/image.jpg',
+            uri: 'https://www.karakeep.app/release/789',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/789',
             stats: {
               community: {
                 in_collection: 100,
@@ -256,7 +256,7 @@ describe('User Lists Tools', () => {
       });
     });
 
-    it('handles get_list DiscogsResourceNotFoundError', async () => {
+    it('handles get_list KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -265,7 +265,7 @@ describe('User Lists Tools', () => {
           });
 
           vi.spyOn(ListService.prototype, 'getList').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getListTool);

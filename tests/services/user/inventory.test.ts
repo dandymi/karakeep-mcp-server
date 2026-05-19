@@ -13,9 +13,9 @@ const mockInventoryResponse: UserInventoryResponse = {
     pages: 2,
     items: 75,
     urls: {
-      first: 'https://api.discogs.com/users/testuser/inventory?page=1',
-      next: 'https://api.discogs.com/users/testuser/inventory?page=2',
-      last: 'https://api.discogs.com/users/testuser/inventory?page=2',
+      first: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=1',
+      next: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=2',
+      last: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=2',
     },
   },
   listings: [
@@ -31,8 +31,8 @@ const mockInventoryResponse: UserInventoryResponse = {
       sleeve_condition: 'Near Mint (NM or M-)',
       comments: 'Test listing',
       audio: true,
-      resource_url: 'https://api.discogs.com/marketplace/listings/123',
-      uri: 'https://www.discogs.com/sell/item/123',
+      resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
+      uri: 'https://www.karakeep.app/sell/item/123',
       ships_from: 'US',
       posted: '2024-01-01T00:00:00Z',
       original_price: {
@@ -48,18 +48,18 @@ const mockInventoryResponse: UserInventoryResponse = {
           total: 100,
         },
         min_order_total: 0,
-        html_url: 'https://www.discogs.com/user/testuser',
+        html_url: 'https://www.karakeep.app/user/testuser',
         uid: 789,
-        url: 'https://api.discogs.com/users/testuser',
+        url: 'https://api.karakeep.app/api/v1/users/testuser',
         payment: 'PayPal',
         shipping: 'Worldwide',
-        resource_url: 'https://api.discogs.com/users/testuser',
-        avatar_url: 'https://api.discogs.com/images/u-789-1.jpg',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
+        avatar_url: 'https://api.karakeep.app/api/v1/images/u-789-1.jpg',
       },
       release: {
         id: 456,
         description: 'Test Release',
-        resource_url: 'https://api.discogs.com/releases/456',
+        resource_url: 'https://api.karakeep.app/api/v1/releases/456',
         stats: {
           community: {
             in_wantlist: 10,
@@ -70,7 +70,7 @@ const mockInventoryResponse: UserInventoryResponse = {
         artist: 'Test Artist',
         title: 'Test Title',
         format: 'Vinyl, LP',
-        thumbnail: 'https://api.discogs.com/images/R-456-1.jpg',
+        thumbnail: 'https://api.karakeep.app/api/v1/images/R-456-1.jpg',
       },
     },
   ],
@@ -122,11 +122,11 @@ describe('UserInventoryService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ username: 'nonexistent' })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 

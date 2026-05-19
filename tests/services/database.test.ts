@@ -13,8 +13,8 @@ const mockSearchResults: SearchResults = {
     per_page: 50,
     items: 1,
     urls: {
-      first: 'https://api.discogs.com/database/search?page=1',
-      last: 'https://api.discogs.com/database/search?page=1',
+      first: 'https://api.karakeep.app/api/v1/database/search?page=1',
+      last: 'https://api.karakeep.app/api/v1/database/search?page=1',
     },
   },
   results: [
@@ -22,8 +22,8 @@ const mockSearchResults: SearchResults = {
       id: 123,
       title: 'Test Release',
       type: 'release',
-      uri: 'https://www.discogs.com/release/123',
-      resource_url: 'https://api.discogs.com/releases/123',
+      uri: 'https://www.karakeep.app/release/123',
+      resource_url: 'https://api.karakeep.app/api/v1/releases/123',
       thumb: 'https://example.com/thumb.jpg',
       cover_image: 'https://example.com/cover.jpg',
       country: 'US',
@@ -35,7 +35,7 @@ const mockSearchResults: SearchResults = {
       barcode: ['1234567890123'],
       catno: 'TEST-001',
       master_id: 456,
-      master_url: 'https://api.discogs.com/masters/456',
+      master_url: 'https://api.karakeep.app/api/v1/masters/456',
       format_quantity: 1,
       formats: [
         {
@@ -144,11 +144,11 @@ describe('DatabaseService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.search({ q: 'test', per_page: 50 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 

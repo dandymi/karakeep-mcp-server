@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createDiscogsError } from '../../src/errors.js';
+import { createDiscogsError } from '../../src/errors.ts';
 import { DiscogsService, RequestOptions } from '../../src/services/index.js';
 
 // Mock the config
@@ -51,7 +51,7 @@ describe('DiscogsService', () => {
   });
 
   it('should initialize with correct base URL and headers', () => {
-    expect(service['baseUrl']).toBe('https://api.discogs.com/test');
+    expect(service['baseUrl']).toBe('https://api.karakeep.app/api/v1/test');
     expect(service['headers']).toEqual({
       Accept: 'application/json',
       Authorization: 'Discogs token=test-token',
@@ -78,7 +78,7 @@ describe('DiscogsService', () => {
 
     // Verify the URL and request options
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://api.discogs.com/test/items?page=1&sort=name&per_page=5',
+      'https://api.karakeep.app/api/v1/test/items?page=1&sort=name&per_page=5',
       {
         method: 'GET',
         headers: service['headers'],
@@ -110,7 +110,7 @@ describe('DiscogsService', () => {
     });
 
     // Verify request was made correctly
-    expect(fetchMock).toHaveBeenCalledWith('https://api.discogs.com/test/items?per_page=5', {
+    expect(fetchMock).toHaveBeenCalledWith('https://api.karakeep.app/api/v1/test/items?per_page=5', {
       method: 'POST',
       headers: service['headers'],
       body: JSON.stringify(requestBody),

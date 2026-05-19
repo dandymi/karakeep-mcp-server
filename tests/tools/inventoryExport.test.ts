@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { InventoryService } from '../../src/services/inventory.js';
 import {
   downloadInventoryExportTool,
@@ -67,7 +67,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles inventory_export DiscogsAuthenticationError properly', async () => {
+    it('handles inventory_export KarakeepAuthenticationError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -76,7 +76,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'export').mockRejectedValue(
-            formatDiscogsError('Authentication error'),
+            formatKarakeepError('Authentication error'),
           );
 
           server.addTool(inventoryExportTool);
@@ -160,10 +160,10 @@ describe('Inventory Export Tool', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/inventory/export?page=1',
+            first: 'https://api.karakeep.app/api/v1/inventory/export?page=1',
             prev: undefined,
             next: undefined,
-            last: 'https://api.discogs.com/inventory/export?page=1',
+            last: 'https://api.karakeep.app/api/v1/inventory/export?page=1',
           },
         },
         items: [
@@ -171,9 +171,9 @@ describe('Inventory Export Tool', () => {
             id: 123,
             status: 'Finished',
             created_ts: '2024-01-01T00:00:00Z',
-            url: 'https://api.discogs.com/inventory/export/123',
+            url: 'https://api.karakeep.app/api/v1/inventory/export/123',
             finished_ts: '2024-01-01T00:01:00Z',
-            download_url: 'https://api.discogs.com/inventory/export/123/download',
+            download_url: 'https://api.karakeep.app/api/v1/inventory/export/123/download',
             filename: 'inventory_20240101.csv',
           },
         ],
@@ -203,7 +203,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles get_inventory_exports DiscogsAuthenticationError properly', async () => {
+    it('handles get_inventory_exports KarakeepAuthenticationError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -212,7 +212,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'getExports').mockRejectedValue(
-            formatDiscogsError('Authentication error'),
+            formatKarakeepError('Authentication error'),
           );
 
           server.addTool(getInventoryExportsTool);
@@ -296,9 +296,9 @@ describe('Inventory Export Tool', () => {
         id: 123,
         status: 'Finished',
         created_ts: '2024-01-01T00:00:00Z',
-        url: 'https://api.discogs.com/inventory/export/123',
+        url: 'https://api.karakeep.app/api/v1/inventory/export/123',
         finished_ts: '2024-01-01T00:01:00Z',
-        download_url: 'https://api.discogs.com/inventory/export/123/download',
+        download_url: 'https://api.karakeep.app/api/v1/inventory/export/123/download',
         filename: 'inventory_20240101.csv',
       };
 
@@ -326,7 +326,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles get_inventory_export DiscogsAuthenticationError properly', async () => {
+    it('handles get_inventory_export KarakeepAuthenticationError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -335,7 +335,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'getExport').mockRejectedValue(
-            formatDiscogsError('Authentication error'),
+            formatKarakeepError('Authentication error'),
           );
 
           server.addTool(getInventoryExportTool);
@@ -355,7 +355,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles get_inventory_export DiscogsResourceNotFoundError properly', async () => {
+    it('handles get_inventory_export KarakeepResourceNotFoundError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -364,7 +364,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'getExport').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getInventoryExportTool);
@@ -470,7 +470,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles download_inventory_export DiscogsAuthenticationError properly', async () => {
+    it('handles download_inventory_export KarakeepAuthenticationError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -479,7 +479,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'downloadExport').mockRejectedValue(
-            formatDiscogsError('Authentication error'),
+            formatKarakeepError('Authentication error'),
           );
 
           server.addTool(downloadInventoryExportTool);
@@ -499,7 +499,7 @@ describe('Inventory Export Tool', () => {
       });
     });
 
-    it('handles download_inventory_export DiscogsResourceNotFoundError properly', async () => {
+    it('handles download_inventory_export KarakeepResourceNotFoundError properly', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -508,7 +508,7 @@ describe('Inventory Export Tool', () => {
           });
 
           vi.spyOn(InventoryService.prototype, 'downloadExport').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(downloadInventoryExportTool);

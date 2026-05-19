@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { MarketplaceService } from '../../src/services/marketplace.js';
 import { UserInventoryService } from '../../src/services/user/inventory.js';
 import {
@@ -22,8 +22,8 @@ import { runWithTestServer } from '../utils/testServer.js';
 
 const mockListing = {
   id: 123,
-  resource_url: 'https://api.discogs.com/marketplace/listings/123',
-  uri: 'https://www.discogs.com/sell/item/123',
+  resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
+  uri: 'https://www.karakeep.app/sell/item/123',
   status: 'For Sale' as const,
   condition: 'Very Good (VG)',
   sleeve_condition: 'Very Good (VG)',
@@ -63,16 +63,16 @@ const mockListing = {
       total: 100,
     },
     min_order_total: 0,
-    html_url: 'https://www.discogs.com/user/TestSeller',
+    html_url: 'https://www.karakeep.app/user/TestSeller',
     uid: 12345,
-    url: 'https://api.discogs.com/users/TestSeller',
+    url: 'https://api.karakeep.app/api/v1/users/TestSeller',
     payment: 'PayPal',
     shipping: 'Test shipping policy',
-    resource_url: 'https://api.discogs.com/users/TestSeller',
+    resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
   },
   release: {
     catalog_number: 'ABC123',
-    resource_url: 'https://api.discogs.com/releases/12345',
+    resource_url: 'https://api.karakeep.app/api/v1/releases/12345',
     year: 2020,
     id: 12345,
     description: 'Test Release - LP, Album',
@@ -101,7 +101,7 @@ const mockListing = {
 
 const mockListingNewResponse = {
   listing_id: 123,
-  resource_url: 'https://api.discogs.com/marketplace/listings/123',
+  resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
 };
 
 describe('Marketplace Tools', () => {
@@ -221,7 +221,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'createListing').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(createMarketplaceListingTool);
@@ -344,7 +344,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'getListing').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMarketplaceListingTool);
@@ -458,7 +458,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'deleteListing').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(deleteMarketplaceListingTool);
@@ -624,7 +624,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'updateListing').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(updateMarketplaceListingTool);
@@ -679,9 +679,9 @@ describe('Marketplace Tools', () => {
   describe('get_marketplace_order', () => {
     const mockOrder = {
       id: 123,
-      resource_url: 'https://api.discogs.com/marketplace/orders/123',
-      messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-      uri: 'https://www.discogs.com/sell/order/123',
+      resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+      messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+      uri: 'https://www.karakeep.app/sell/order/123',
       status: 'New Order' as const,
       next_status: ['Buyer Contacted' as const, 'Invoice Sent' as const],
       fee: {
@@ -715,13 +715,13 @@ describe('Marketplace Tools', () => {
       seller: {
         id: 12345,
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
       last_activity: '2024-04-15T18:43:39-07:00',
       buyer: {
         id: 67890,
         username: 'TestBuyer',
-        resource_url: 'https://api.discogs.com/users/TestBuyer',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
       },
       total: {
         currency: 'USD' as const,
@@ -794,7 +794,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'getOrder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMarketplaceOrderTool);
@@ -843,9 +843,9 @@ describe('Marketplace Tools', () => {
   describe('edit_marketplace_order', () => {
     const mockOrder = {
       id: 123,
-      resource_url: 'https://api.discogs.com/marketplace/orders/123',
-      messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-      uri: 'https://www.discogs.com/sell/order/123',
+      resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+      messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+      uri: 'https://www.karakeep.app/sell/order/123',
       status: 'New Order' as const,
       next_status: ['Buyer Contacted' as const, 'Invoice Sent' as const],
       fee: {
@@ -879,13 +879,13 @@ describe('Marketplace Tools', () => {
       seller: {
         id: 12345,
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
       last_activity: '2024-04-15T18:43:39-07:00',
       buyer: {
         id: 67890,
         username: 'TestBuyer',
-        resource_url: 'https://api.discogs.com/users/TestBuyer',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
       },
       total: {
         currency: 'USD' as const,
@@ -974,7 +974,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'editOrder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editMarketplaceOrderTool);
@@ -1028,16 +1028,16 @@ describe('Marketplace Tools', () => {
         per_page: 50,
         items: 1,
         urls: {
-          last: 'https://api.discogs.com/marketplace/orders?page=1&per_page=50',
-          next: 'https://api.discogs.com/marketplace/orders?page=1&per_page=50',
+          last: 'https://api.karakeep.app/api/v1/marketplace/orders?page=1&per_page=50',
+          next: 'https://api.karakeep.app/api/v1/marketplace/orders?page=1&per_page=50',
         },
       },
       orders: [
         {
           id: 123,
-          resource_url: 'https://api.discogs.com/marketplace/orders/123',
-          messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-          uri: 'https://www.discogs.com/sell/order/123',
+          resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+          messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+          uri: 'https://www.karakeep.app/sell/order/123',
           status: 'New Order' as const,
           next_status: ['Buyer Contacted' as const, 'Invoice Sent' as const],
           fee: {
@@ -1071,13 +1071,13 @@ describe('Marketplace Tools', () => {
           seller: {
             id: 12345,
             username: 'TestSeller',
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
           },
           last_activity: '2024-04-15T18:43:39-07:00',
           buyer: {
             id: 67890,
             username: 'TestBuyer',
-            resource_url: 'https://api.discogs.com/users/TestBuyer',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
           },
           total: {
             currency: 'USD' as const,
@@ -1182,7 +1182,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'getOrders').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMarketplaceOrdersTool);
@@ -1240,8 +1240,8 @@ describe('Marketplace Tools', () => {
         per_page: 50,
         items: 1,
         urls: {
-          last: 'https://api.discogs.com/marketplace/orders/123/messages?page=1&per_page=50',
-          next: 'https://api.discogs.com/marketplace/orders/123/messages?page=1&per_page=50',
+          last: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages?page=1&per_page=50',
+          next: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages?page=1&per_page=50',
         },
       },
       messages: [
@@ -1251,19 +1251,19 @@ describe('Marketplace Tools', () => {
           type: 'message',
           order: {
             id: 123,
-            resource_url: 'https://api.discogs.com/marketplace/orders/123',
+            resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
           },
           subject: 'Test subject',
           from: {
             id: 12345,
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
             username: 'TestSeller',
             avatar_url: 'https://i.discogs.com/avatar.jpg',
           },
           status_id: 1,
           actor: {
             username: 'TestSeller',
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
           },
         },
       ],
@@ -1345,7 +1345,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'getOrderMessages').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMarketplaceOrderMessagesTool);
@@ -1403,19 +1403,19 @@ describe('Marketplace Tools', () => {
       type: 'message',
       order: {
         id: 123,
-        resource_url: 'https://api.discogs.com/marketplace/orders/123',
+        resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
       },
       subject: 'Test subject',
       from: {
         id: 12345,
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
         username: 'TestSeller',
         avatar_url: 'https://i.discogs.com/avatar.jpg',
       },
       status_id: 1,
       actor: {
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
     };
 
@@ -1506,7 +1506,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'createOrderMessage').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(createMarketplaceOrderMessageTool);
@@ -1656,7 +1656,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(MarketplaceService.prototype, 'getReleaseStats').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMarketplaceReleaseStatsTool);
@@ -1715,9 +1715,9 @@ describe('Marketplace Tools', () => {
         pages: 2,
         items: 75,
         urls: {
-          first: 'https://api.discogs.com/users/testuser/inventory?page=1',
-          next: 'https://api.discogs.com/users/testuser/inventory?page=2',
-          last: 'https://api.discogs.com/users/testuser/inventory?page=2',
+          first: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=1',
+          next: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=2',
+          last: 'https://api.karakeep.app/api/v1/users/testuser/inventory?page=2',
         },
       },
       listings: [
@@ -1733,8 +1733,8 @@ describe('Marketplace Tools', () => {
           sleeve_condition: 'Near Mint (NM or M-)',
           comments: 'Test listing',
           audio: true,
-          resource_url: 'https://api.discogs.com/marketplace/listings/123',
-          uri: 'https://www.discogs.com/sell/item/123',
+          resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
+          uri: 'https://www.karakeep.app/sell/item/123',
           ships_from: 'US',
           posted: '2024-01-01T00:00:00Z',
           original_price: {
@@ -1750,18 +1750,18 @@ describe('Marketplace Tools', () => {
               total: 100,
             },
             min_order_total: 0,
-            html_url: 'https://www.discogs.com/user/testuser',
+            html_url: 'https://www.karakeep.app/user/testuser',
             uid: 789,
-            url: 'https://api.discogs.com/users/testuser',
+            url: 'https://api.karakeep.app/api/v1/users/testuser',
             payment: 'PayPal',
             shipping: 'Worldwide',
-            resource_url: 'https://api.discogs.com/users/testuser',
-            avatar_url: 'https://api.discogs.com/images/u-789-1.jpg',
+            resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
+            avatar_url: 'https://api.karakeep.app/api/v1/images/u-789-1.jpg',
           },
           release: {
             id: 456,
             description: 'Test Release',
-            resource_url: 'https://api.discogs.com/releases/456',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/456',
             stats: {
               community: {
                 in_wantlist: 10,
@@ -1772,7 +1772,7 @@ describe('Marketplace Tools', () => {
             artist: 'Test Artist',
             title: 'Test Title',
             format: 'Vinyl, LP',
-            thumbnail: 'https://api.discogs.com/images/R-456-1.jpg',
+            thumbnail: 'https://api.karakeep.app/api/v1/images/R-456-1.jpg',
           },
         },
       ],
@@ -1869,7 +1869,7 @@ describe('Marketplace Tools', () => {
           const server = new FastMCP({ name: 'Test', version: '1.0.0' });
 
           vi.spyOn(UserInventoryService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserInventoryTool);

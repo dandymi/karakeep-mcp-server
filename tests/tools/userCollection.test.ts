@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { UserCollectionService } from '../../src/services/user/collection.js';
 import {
   addReleaseToUserCollectionFolderTool,
@@ -62,13 +62,13 @@ describe('User Collection Tools', () => {
             id: 1,
             name: 'All',
             count: 100,
-            resource_url: 'https://api.discogs.com/users/testuser/collection/folders/1',
+            resource_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1',
           },
           {
             id: 2,
             name: 'Uncategorized',
             count: 50,
-            resource_url: 'https://api.discogs.com/users/testuser/collection/folders/2',
+            resource_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/2',
           },
         ],
       };
@@ -99,7 +99,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles get_user_collection_folders DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_collection_folders KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -108,7 +108,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'getFolders').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserCollectionFoldersTool);
@@ -195,7 +195,7 @@ describe('User Collection Tools', () => {
         id: 1,
         name: 'All',
         count: 100,
-        resource_url: 'https://api.discogs.com/users/testuser/collection/folders/1',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1',
       };
 
       await runWithTestServer({
@@ -225,7 +225,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles get_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -234,7 +234,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'getFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserCollectionFolderTool);
@@ -322,7 +322,7 @@ describe('User Collection Tools', () => {
         id: 3,
         name: 'New Folder',
         count: 0,
-        resource_url: 'https://api.discogs.com/users/testuser/collection/folders/3',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/3',
       };
 
       await runWithTestServer({
@@ -352,7 +352,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles create_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles create_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -361,7 +361,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'createFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(createUserCollectionFolderTool);
@@ -450,7 +450,7 @@ describe('User Collection Tools', () => {
         id: 1,
         name: 'Updated Folder',
         count: 100,
-        resource_url: 'https://api.discogs.com/users/testuser/collection/folders/1',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1',
       };
 
       await runWithTestServer({
@@ -481,7 +481,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles edit_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles edit_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -490,7 +490,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'editFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editUserCollectionFolderTool);
@@ -603,7 +603,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles delete_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles delete_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -612,7 +612,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'deleteFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(deleteUserCollectionFolderTool);
@@ -720,8 +720,8 @@ describe('User Collection Tools', () => {
           items: 1,
           urls: {
             first:
-              'https://api.discogs.com/users/testuser/collection/folders/1/releases?page=1&per_page=50',
-            last: 'https://api.discogs.com/users/testuser/collection/folders/1/releases?page=1&per_page=50',
+              'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1/releases?page=1&per_page=50',
+            last: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1/releases?page=1&per_page=50',
           },
         },
         releases: [
@@ -734,14 +734,14 @@ describe('User Collection Tools', () => {
               id: 123,
               title: 'Test Release',
               year: 2024,
-              resource_url: 'https://api.discogs.com/releases/123',
-              cover_image: 'https://api.discogs.com/releases/123/image',
-              thumb: 'https://api.discogs.com/releases/123/thumb',
+              resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+              cover_image: 'https://api.karakeep.app/api/v1/releases/123/image',
+              thumb: 'https://api.karakeep.app/api/v1/releases/123/thumb',
               artists: [
                 {
                   id: 789,
                   name: 'Test Artist',
-                  resource_url: 'https://api.discogs.com/artists/789',
+                  resource_url: 'https://api.karakeep.app/api/v1/artists/789',
                   join: '',
                   role: '',
                   anv: '',
@@ -786,7 +786,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles get_user_collection_items DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_collection_items KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -795,7 +795,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'getItems').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserCollectionItemsTool);
@@ -859,7 +859,7 @@ describe('User Collection Tools', () => {
       const mockAdded = {
         instance_id: 456,
         resource_url:
-          'https://api.discogs.com/users/testuser/collection/releases/123/instances/456',
+          'https://api.karakeep.app/api/v1/users/testuser/collection/releases/123/instances/456',
       };
 
       await runWithTestServer({
@@ -892,7 +892,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles add_release_to_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles add_release_to_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -901,7 +901,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'addReleaseToFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(addReleaseToUserCollectionFolderTool);
@@ -1024,7 +1024,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles delete_release_from_user_collection_folder DiscogsResourceNotFoundError', async () => {
+    it('handles delete_release_from_user_collection_folder KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1033,7 +1033,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'deleteReleaseFromFolder').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(deleteReleaseFromUserCollectionFolderTool);
@@ -1131,8 +1131,8 @@ describe('User Collection Tools', () => {
           items: 1,
           urls: {
             first:
-              'https://api.discogs.com/users/testuser/collection/folders/1/releases?page=1&per_page=50',
-            last: 'https://api.discogs.com/users/testuser/collection/folders/1/releases?page=1&per_page=50',
+              'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1/releases?page=1&per_page=50',
+            last: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders/1/releases?page=1&per_page=50',
           },
         },
         releases: [
@@ -1145,14 +1145,14 @@ describe('User Collection Tools', () => {
               id: 123,
               title: 'Test Release',
               year: 2024,
-              resource_url: 'https://api.discogs.com/releases/123',
-              cover_image: 'https://api.discogs.com/releases/123/image',
-              thumb: 'https://api.discogs.com/releases/123/thumb',
+              resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+              cover_image: 'https://api.karakeep.app/api/v1/releases/123/image',
+              thumb: 'https://api.karakeep.app/api/v1/releases/123/thumb',
               artists: [
                 {
                   id: 789,
                   name: 'Test Artist',
-                  resource_url: 'https://api.discogs.com/artists/789',
+                  resource_url: 'https://api.karakeep.app/api/v1/artists/789',
                   join: '',
                   role: '',
                   anv: '',
@@ -1197,7 +1197,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles find_release_in_user_collection DiscogsResourceNotFoundError', async () => {
+    it('handles find_release_in_user_collection KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1206,7 +1206,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'findRelease').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(findReleaseInUserCollectionTool);
@@ -1349,7 +1349,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles get_user_collection_custom_fields DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_collection_custom_fields KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1358,7 +1358,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'getCustomFields').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserCollectionCustomFieldsTool);
@@ -1479,7 +1479,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles rate_release_in_user_collection DiscogsResourceNotFoundError', async () => {
+    it('handles rate_release_in_user_collection KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1488,7 +1488,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'rateRelease').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(rateReleaseInUserCollectionTool);
@@ -1620,7 +1620,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles move_release_in_user_collection DiscogsResourceNotFoundError', async () => {
+    it('handles move_release_in_user_collection KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1629,7 +1629,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'moveRelease').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(moveReleaseInUserCollectionTool);
@@ -1748,7 +1748,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles get_user_collection_value DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_collection_value KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1757,7 +1757,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'getValue').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserCollectionValueTool);
@@ -1884,7 +1884,7 @@ describe('User Collection Tools', () => {
       });
     });
 
-    it('handles edit_user_collection_custom_field_value DiscogsResourceNotFoundError', async () => {
+    it('handles edit_user_collection_custom_field_value KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1893,7 +1893,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'editCustomFieldValue').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editUserCollectionCustomFieldValueTool);
@@ -1954,7 +1954,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'editCustomFieldValue').mockRejectedValue(
-            formatDiscogsError('Validation failed'),
+            formatKarakeepError('Validation failed'),
           );
 
           server.addTool(editUserCollectionCustomFieldValueTool);
@@ -1990,7 +1990,7 @@ describe('User Collection Tools', () => {
           });
 
           vi.spyOn(UserCollectionService.prototype, 'editCustomFieldValue').mockRejectedValue(
-            formatDiscogsError('Permission denied'),
+            formatKarakeepError('Permission denied'),
           );
 
           server.addTool(editUserCollectionCustomFieldValueTool);

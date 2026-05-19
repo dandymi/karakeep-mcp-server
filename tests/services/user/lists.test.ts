@@ -13,8 +13,8 @@ const mockUserLists: UserLists = {
     per_page: 50,
     items: 2,
     urls: {
-      last: 'https://api.discogs.com/users/testuser/lists?page=1',
-      next: 'https://api.discogs.com/users/testuser/lists?page=1',
+      last: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1',
+      next: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1',
     },
   },
   lists: [
@@ -25,8 +25,8 @@ const mockUserLists: UserLists = {
       public: true,
       date_added: '2024-01-01T00:00:00Z',
       date_changed: '2024-01-02T00:00:00Z',
-      resource_url: 'https://api.discogs.com/lists/123',
-      uri: 'https://www.discogs.com/lists/123',
+      resource_url: 'https://api.karakeep.app/api/v1/lists/123',
+      uri: 'https://www.karakeep.app/lists/123',
     },
     {
       id: 124,
@@ -35,8 +35,8 @@ const mockUserLists: UserLists = {
       public: false,
       date_added: '2024-01-03T00:00:00Z',
       date_changed: '2024-01-04T00:00:00Z',
-      resource_url: 'https://api.discogs.com/lists/124',
-      uri: 'https://www.discogs.com/lists/124',
+      resource_url: 'https://api.karakeep.app/api/v1/lists/124',
+      uri: 'https://www.karakeep.app/lists/124',
     },
   ],
 };
@@ -79,21 +79,21 @@ describe('UserListsService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ username: 'testuser', per_page: 50 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ username: 'nonexistent', per_page: 50 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 
@@ -105,8 +105,8 @@ describe('UserListsService', () => {
           per_page: 50,
           items: 2,
           urls: {
-            last: 'https://api.discogs.com/users/testuser/lists?page=1',
-            next: 'https://api.discogs.com/users/testuser/lists?page=1',
+            last: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1',
+            next: 'https://api.karakeep.app/api/v1/users/testuser/lists?page=1',
           },
         },
         lists: [],

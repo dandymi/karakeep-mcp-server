@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { ArtistService } from '../../src/services/artist';
 import { DatabaseService } from '../../src/services/database';
 import { LabelService } from '../../src/services/label';
@@ -73,7 +73,7 @@ describe('Database Tools', () => {
             join: ',',
             role: 'Main',
             anv: '',
-            resource_url: 'https://api.discogs.com/artists/456',
+            resource_url: 'https://api.karakeep.app/api/v1/artists/456',
             tracks: '',
           },
         ],
@@ -81,13 +81,13 @@ describe('Database Tools', () => {
           {
             id: 789,
             name: 'Test Label',
-            resource_url: 'https://api.discogs.com/labels/789',
+            resource_url: 'https://api.karakeep.app/api/v1/labels/789',
             catno: 'TEST001',
           },
         ],
         year: 2024,
-        resource_url: 'https://api.discogs.com/releases/123',
-        uri: 'https://www.discogs.com/release/123',
+        resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+        uri: 'https://www.karakeep.app/release/123',
       };
 
       await runWithTestServer({
@@ -116,7 +116,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_release DiscogsResourceNotFoundError', async () => {
+    it('handles get_release KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -126,7 +126,7 @@ describe('Database Tools', () => {
 
           // Mock the service to throw a UserError
           vi.spyOn(ReleaseService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getReleaseTool);
@@ -242,7 +242,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_release_rating_by_user DiscogsResourceNotFoundError', async () => {
+    it('handles get_release_rating_by_user KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -251,7 +251,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ReleaseService.prototype, 'getRatingByUser').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getReleaseRatingTool);
@@ -370,7 +370,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles edit_release_rating DiscogsResourceNotFoundError', async () => {
+    it('handles edit_release_rating KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -379,7 +379,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ReleaseService.prototype, 'editRatingByUser').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editReleaseRatingTool);
@@ -505,7 +505,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles delete_release_rating DiscogsResourceNotFoundError', async () => {
+    it('handles delete_release_rating KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -514,7 +514,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ReleaseService.prototype, 'deleteRatingByUser').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(deleteReleaseRatingTool);
@@ -631,7 +631,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_release_community_rating DiscogsResourceNotFoundError', async () => {
+    it('handles get_release_community_rating KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -640,7 +640,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ReleaseService.prototype, 'getCommunityRating').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getReleaseCommunityRatingTool);
@@ -736,19 +736,19 @@ describe('Database Tools', () => {
             join: ',',
             role: 'Main',
             anv: '',
-            resource_url: 'https://api.discogs.com/artists/456',
+            resource_url: 'https://api.karakeep.app/api/v1/artists/456',
             tracks: '',
-            thumbnail_url: 'https://api.discogs.com/artists/456/thumb.jpg',
+            thumbnail_url: 'https://api.karakeep.app/api/v1/artists/456/thumb.jpg',
           },
         ],
         year: 2024,
-        resource_url: 'https://api.discogs.com/masters/123',
-        uri: 'https://www.discogs.com/master/123',
+        resource_url: 'https://api.karakeep.app/api/v1/masters/123',
+        uri: 'https://www.karakeep.app/master/123',
         main_release: 123,
         most_recent_release: 123,
-        versions_url: 'https://api.discogs.com/masters/123/versions',
-        main_release_url: 'https://api.discogs.com/releases/123',
-        most_recent_release_url: 'https://api.discogs.com/releases/123',
+        versions_url: 'https://api.karakeep.app/api/v1/masters/123/versions',
+        main_release_url: 'https://api.karakeep.app/api/v1/releases/123',
+        most_recent_release_url: 'https://api.karakeep.app/api/v1/releases/123',
       };
 
       await runWithTestServer({
@@ -777,7 +777,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_master_release DiscogsResourceNotFoundError', async () => {
+    it('handles get_master_release KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -786,7 +786,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(MasterReleaseService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMasterReleaseTool);
@@ -872,8 +872,8 @@ describe('Database Tools', () => {
         id: 123,
         name: 'Test Artist',
         profile: 'Test profile',
-        resource_url: 'https://api.discogs.com/artists/123',
-        uri: 'https://www.discogs.com/artist/123',
+        resource_url: 'https://api.karakeep.app/api/v1/artists/123',
+        uri: 'https://www.karakeep.app/artist/123',
       };
 
       await runWithTestServer({
@@ -902,7 +902,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_artist DiscogsResourceNotFoundError', async () => {
+    it('handles get_artist KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -911,7 +911,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ArtistService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getArtistTool);
@@ -1010,10 +1010,10 @@ describe('Database Tools', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/artists/123/releases?page=1',
+            first: 'https://api.karakeep.app/api/v1/artists/123/releases?page=1',
             prev: undefined,
             next: undefined,
-            last: 'https://api.discogs.com/artists/123/releases?page=1',
+            last: 'https://api.karakeep.app/api/v1/artists/123/releases?page=1',
           },
         },
         releases: [
@@ -1021,14 +1021,14 @@ describe('Database Tools', () => {
             id: 123,
             title: 'Test Release',
             year: 2024,
-            resource_url: 'https://api.discogs.com/releases/123',
-            uri: 'https://www.discogs.com/release/123',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+            uri: 'https://www.karakeep.app/release/123',
             artist: 'Test Artist',
             type: 'release',
             status: 'Accepted',
             role: 'Main',
             catno: 'TEST001',
-            thumb: 'https://api.discogs.com/releases/123/thumb.jpg',
+            thumb: 'https://api.karakeep.app/api/v1/releases/123/thumb.jpg',
             trackinfo: 'A1 Test Track',
           },
         ],
@@ -1060,7 +1060,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_artist_releases DiscogsResourceNotFoundError', async () => {
+    it('handles get_artist_releases KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1069,7 +1069,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(ArtistService.prototype, 'getReleases').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getArtistReleasesTool);
@@ -1155,8 +1155,8 @@ describe('Database Tools', () => {
         id: 123,
         name: 'Test Label',
         profile: 'Test profile',
-        resource_url: 'https://api.discogs.com/labels/123',
-        uri: 'https://www.discogs.com/label/123',
+        resource_url: 'https://api.karakeep.app/api/v1/labels/123',
+        uri: 'https://www.karakeep.app/label/123',
       };
 
       await runWithTestServer({
@@ -1185,7 +1185,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_label DiscogsResourceNotFoundError', async () => {
+    it('handles get_label KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1194,7 +1194,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(LabelService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getLabelTool);
@@ -1293,10 +1293,10 @@ describe('Database Tools', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/labels/123/releases?page=1',
+            first: 'https://api.karakeep.app/api/v1/labels/123/releases?page=1',
             prev: undefined,
             next: undefined,
-            last: 'https://api.discogs.com/labels/123/releases?page=1',
+            last: 'https://api.karakeep.app/api/v1/labels/123/releases?page=1',
           },
         },
         releases: [
@@ -1304,14 +1304,14 @@ describe('Database Tools', () => {
             id: 123,
             title: 'Test Release',
             year: 2024,
-            resource_url: 'https://api.discogs.com/releases/123',
-            uri: 'https://www.discogs.com/release/123',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+            uri: 'https://www.karakeep.app/release/123',
             artist: 'Test Artist',
             type: 'release',
             status: 'Accepted',
             role: 'Main',
             catno: 'TEST001',
-            thumb: 'https://api.discogs.com/releases/123/thumb.jpg',
+            thumb: 'https://api.karakeep.app/api/v1/releases/123/thumb.jpg',
             trackinfo: 'A1 Test Track',
           },
         ],
@@ -1343,7 +1343,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_label_releases DiscogsResourceNotFoundError', async () => {
+    it('handles get_label_releases KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1352,7 +1352,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(LabelService.prototype, 'getReleases').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getLabelReleasesTool);
@@ -1470,10 +1470,10 @@ describe('Database Tools', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/database/search?q=test&page=1',
+            first: 'https://api.karakeep.app/api/v1/database/search?q=test&page=1',
             prev: undefined,
             next: undefined,
-            last: 'https://api.discogs.com/database/search?q=test&page=1',
+            last: 'https://api.karakeep.app/api/v1/database/search?q=test&page=1',
           },
         },
         results: [
@@ -1482,8 +1482,8 @@ describe('Database Tools', () => {
             type: 'release' as const,
             title: 'Test Release',
             year: '2024',
-            resource_url: 'https://api.discogs.com/releases/123',
-            uri: 'https://www.discogs.com/release/123',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+            uri: 'https://www.karakeep.app/release/123',
             catno: 'TEST001',
             community: {
               have: 100,
@@ -1579,9 +1579,9 @@ describe('Database Tools', () => {
           pages: 2,
           items: 75,
           urls: {
-            first: 'https://api.discogs.com/masters/123/versions?page=1',
-            next: 'https://api.discogs.com/masters/123/versions?page=2',
-            last: 'https://api.discogs.com/masters/123/versions?page=2',
+            first: 'https://api.karakeep.app/api/v1/masters/123/versions?page=1',
+            next: 'https://api.karakeep.app/api/v1/masters/123/versions?page=2',
+            last: 'https://api.karakeep.app/api/v1/masters/123/versions?page=2',
           },
         },
         versions: [
@@ -1595,7 +1595,7 @@ describe('Database Tools', () => {
             catno: 'TEST-001',
             released: '2024',
             status: 'Accepted',
-            resource_url: 'https://api.discogs.com/releases/456',
+            resource_url: 'https://api.karakeep.app/api/v1/releases/456',
             thumb: 'https://example.com/thumb.jpg',
             stats: {
               community: {
@@ -1664,7 +1664,7 @@ describe('Database Tools', () => {
       });
     });
 
-    it('handles get_master_release_versions DiscogsResourceNotFoundError', async () => {
+    it('handles get_master_release_versions KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -1673,7 +1673,7 @@ describe('Database Tools', () => {
           });
 
           vi.spyOn(MasterReleaseService.prototype, 'getVersions').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getMasterReleaseVersionsTool);

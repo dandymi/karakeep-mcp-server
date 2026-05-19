@@ -9,8 +9,8 @@ import type { UserProfile } from '../../../src/types/user';
 const mockUserProfile: UserProfile = {
   id: 123,
   username: 'testuser',
-  resource_url: 'https://api.discogs.com/users/testuser',
-  uri: 'https://www.discogs.com/user/testuser',
+  resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
+  uri: 'https://www.karakeep.app/user/testuser',
   name: 'Test User',
   home_page: 'https://example.com',
   location: 'Test Location',
@@ -23,10 +23,10 @@ const mockUserProfile: UserProfile = {
   releases_contributed: 10,
   releases_rated: 20,
   rating_avg: 4.5,
-  inventory_url: 'https://api.discogs.com/users/testuser/inventory',
-  collection_folders_url: 'https://api.discogs.com/users/testuser/collection/folders',
-  collection_fields_url: 'https://api.discogs.com/users/testuser/collection/fields',
-  wantlist_url: 'https://api.discogs.com/users/testuser/wants',
+  inventory_url: 'https://api.karakeep.app/api/v1/users/testuser/inventory',
+  collection_folders_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders',
+  collection_fields_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/fields',
+  wantlist_url: 'https://api.karakeep.app/api/v1/users/testuser/wants',
   avatar_url: 'https://example.com/avatar.jpg',
   curr_abbr: 'USD',
   activated: true,
@@ -64,21 +64,21 @@ describe('UserProfileService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ username: 'testuser' })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ username: 'nonexistent' })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 
@@ -119,7 +119,7 @@ describe('UserProfileService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -127,12 +127,12 @@ describe('UserProfileService', () => {
           username: 'testuser',
           name: 'Updated Name',
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -140,12 +140,12 @@ describe('UserProfileService', () => {
           username: 'otheruser',
           name: 'Updated Name',
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -153,7 +153,7 @@ describe('UserProfileService', () => {
           username: 'nonexistent',
           name: 'Updated Name',
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {

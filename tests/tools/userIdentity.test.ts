@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { OAuthService } from '../../src/services/oauth';
 import {
   UserContributionsService,
@@ -52,7 +52,7 @@ describe('User Identity Tools', () => {
       const mockIdentity = {
         id: 123,
         username: 'testuser',
-        resource_url: 'https://api.discogs.com/users/testuser',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
         consumer_name: 'Test App',
       };
 
@@ -80,7 +80,7 @@ describe('User Identity Tools', () => {
       });
     });
 
-    it('handles get_user_identity DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_identity KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -89,7 +89,7 @@ describe('User Identity Tools', () => {
           });
 
           vi.spyOn(OAuthService.prototype, 'getUserIdentity').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserIdentityTool);
@@ -175,8 +175,8 @@ describe('User Identity Tools', () => {
         name: 'Test User',
         profile: 'Test profile',
         location: 'Test Location',
-        resource_url: 'https://api.discogs.com/users/testuser',
-        uri: 'https://www.discogs.com/users/testuser',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
+        uri: 'https://www.karakeep.app/users/testuser',
         home_page: '',
         registered: '2024-01-01T00:00:00Z',
         rank: 1,
@@ -186,10 +186,10 @@ describe('User Identity Tools', () => {
         releases_contributed: 0,
         releases_rated: 0,
         rating_avg: 0,
-        inventory_url: 'https://api.discogs.com/users/testuser/inventory',
-        collection_folders_url: 'https://api.discogs.com/users/testuser/collection/folders',
-        collection_fields_url: 'https://api.discogs.com/users/testuser/collection/fields',
-        wantlist_url: 'https://api.discogs.com/users/testuser/wants',
+        inventory_url: 'https://api.karakeep.app/api/v1/users/testuser/inventory',
+        collection_folders_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders',
+        collection_fields_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/fields',
+        wantlist_url: 'https://api.karakeep.app/api/v1/users/testuser/wants',
         avatar_url: 'https://example.com/avatar.jpg',
         curr_abbr: 'USD',
         activated: true,
@@ -230,7 +230,7 @@ describe('User Identity Tools', () => {
       });
     });
 
-    it('handles get_user_profile DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_profile KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -239,7 +239,7 @@ describe('User Identity Tools', () => {
           });
 
           vi.spyOn(UserProfileService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserProfileTool);
@@ -348,8 +348,8 @@ describe('User Identity Tools', () => {
         name: 'Updated Name',
         profile: 'Updated profile',
         location: 'Updated Location',
-        resource_url: 'https://api.discogs.com/users/testuser',
-        uri: 'https://www.discogs.com/users/testuser',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
+        uri: 'https://www.karakeep.app/users/testuser',
         home_page: '',
         registered: '2024-01-01T00:00:00Z',
         rank: 1,
@@ -359,10 +359,10 @@ describe('User Identity Tools', () => {
         releases_contributed: 0,
         releases_rated: 0,
         rating_avg: 0,
-        inventory_url: 'https://api.discogs.com/users/testuser/inventory',
-        collection_folders_url: 'https://api.discogs.com/users/testuser/collection/folders',
-        collection_fields_url: 'https://api.discogs.com/users/testuser/collection/fields',
-        wantlist_url: 'https://api.discogs.com/users/testuser/wants',
+        inventory_url: 'https://api.karakeep.app/api/v1/users/testuser/inventory',
+        collection_folders_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/folders',
+        collection_fields_url: 'https://api.karakeep.app/api/v1/users/testuser/collection/fields',
+        wantlist_url: 'https://api.karakeep.app/api/v1/users/testuser/wants',
         avatar_url: 'https://example.com/avatar.jpg',
         curr_abbr: 'USD',
         activated: true,
@@ -406,7 +406,7 @@ describe('User Identity Tools', () => {
       });
     });
 
-    it('handles edit_user_profile DiscogsResourceNotFoundError', async () => {
+    it('handles edit_user_profile KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -415,7 +415,7 @@ describe('User Identity Tools', () => {
           });
 
           vi.spyOn(UserProfileService.prototype, 'edit').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editUserProfileTool);
@@ -541,7 +541,7 @@ describe('User Identity Tools', () => {
       });
     });
 
-    it('handles get_user_submissions DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_submissions KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -550,7 +550,7 @@ describe('User Identity Tools', () => {
           });
 
           vi.spyOn(UserSubmissionsService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserSubmissionsTool);
@@ -685,7 +685,7 @@ describe('User Identity Tools', () => {
       });
     });
 
-    it('handles get_user_contributions DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_contributions KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -694,7 +694,7 @@ describe('User Identity Tools', () => {
           });
 
           vi.spyOn(UserContributionsService.prototype, 'get').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserContributionsTool);

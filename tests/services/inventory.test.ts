@@ -24,10 +24,10 @@ describe('InventoryService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.export()).rejects.toThrow('DiscogsAuthenticationError');
+      await expect(service.export()).rejects.toThrow('KarakeepAuthenticationError');
     });
   });
 
@@ -40,10 +40,10 @@ describe('InventoryService', () => {
           per_page: 50,
           items: 1,
           urls: {
-            first: 'https://api.discogs.com/inventory/export?page=1',
+            first: 'https://api.karakeep.app/api/v1/inventory/export?page=1',
             prev: undefined,
             next: undefined,
-            last: 'https://api.discogs.com/inventory/export?page=1',
+            last: 'https://api.karakeep.app/api/v1/inventory/export?page=1',
           },
         },
         items: [
@@ -51,9 +51,9 @@ describe('InventoryService', () => {
             id: 123,
             status: 'Finished',
             created_ts: '2024-01-01T00:00:00Z',
-            url: 'https://api.discogs.com/inventory/export/123',
+            url: 'https://api.karakeep.app/api/v1/inventory/export/123',
             finished_ts: '2024-01-01T00:01:00Z',
-            download_url: 'https://api.discogs.com/inventory/export/123/download',
+            download_url: 'https://api.karakeep.app/api/v1/inventory/export/123/download',
             filename: 'inventory_20240101.csv',
           },
         ],
@@ -69,10 +69,10 @@ describe('InventoryService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getExports()).rejects.toThrow('DiscogsAuthenticationError');
+      await expect(service.getExports()).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -98,9 +98,9 @@ describe('InventoryService', () => {
         id: 123,
         status: 'Finished',
         created_ts: '2024-01-01T00:00:00Z',
-        url: 'https://api.discogs.com/inventory/export/123',
+        url: 'https://api.karakeep.app/api/v1/inventory/export/123',
         finished_ts: '2024-01-01T00:01:00Z',
-        download_url: 'https://api.discogs.com/inventory/export/123/download',
+        download_url: 'https://api.karakeep.app/api/v1/inventory/export/123/download',
         filename: 'inventory_20240101.csv',
       };
 
@@ -114,18 +114,18 @@ describe('InventoryService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getExport({ id: 123 })).rejects.toThrow('DiscogsAuthenticationError');
+      await expect(service.getExport({ id: 123 })).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getExport({ id: 123 })).rejects.toThrow('DiscogsResourceNotFoundError');
+      await expect(service.getExport({ id: 123 })).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -153,21 +153,21 @@ describe('InventoryService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.downloadExport({ id: 123 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.downloadExport({ id: 123 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 

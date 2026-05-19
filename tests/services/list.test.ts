@@ -12,15 +12,15 @@ const mockList: List = {
     id: 456,
     avatar_url: 'https://example.com/avatar.jpg',
     username: 'testuser',
-    resource_url: 'https://api.discogs.com/users/testuser',
+    resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
   },
   name: 'Test List',
   description: 'A test list for testing purposes',
   public: true,
   date_added: '2024-01-01T00:00:00Z',
   date_changed: '2024-01-02T00:00:00Z',
-  uri: 'https://www.discogs.com/lists/123',
-  resource_url: 'https://api.discogs.com/lists/123',
+  uri: 'https://www.karakeep.app/lists/123',
+  resource_url: 'https://api.karakeep.app/api/v1/lists/123',
   image_url: 'https://example.com/list.jpg',
   items: [
     {
@@ -28,7 +28,7 @@ const mockList: List = {
       comment: 'Test comment',
       display_title: 'Test Item',
       image_url: 'https://example.com/item.jpg',
-      resource_url: 'https://api.discogs.com/releases/789',
+      resource_url: 'https://api.karakeep.app/api/v1/releases/789',
       stats: {
         community: {
           in_collection: 42,
@@ -40,7 +40,7 @@ const mockList: List = {
         },
       },
       type: 'release',
-      uri: 'https://www.discogs.com/release/789',
+      uri: 'https://www.karakeep.app/release/789',
     },
   ],
 };
@@ -64,19 +64,19 @@ describe('ListService', () => {
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getList({ list_id: 999 })).rejects.toThrow('DiscogsPermissionError');
+      await expect(service.getList({ list_id: 999 })).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getList({ list_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 

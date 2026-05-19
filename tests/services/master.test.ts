@@ -10,18 +10,18 @@ const mockMasterRelease: MasterRelease = {
   id: 123,
   main_release: 456,
   most_recent_release: 789,
-  versions_url: 'https://api.discogs.com/masters/123/versions',
-  main_release_url: 'https://api.discogs.com/releases/456',
-  most_recent_release_url: 'https://api.discogs.com/releases/789',
+  versions_url: 'https://api.karakeep.app/api/v1/masters/123/versions',
+  main_release_url: 'https://api.karakeep.app/api/v1/releases/456',
+  most_recent_release_url: 'https://api.karakeep.app/api/v1/releases/789',
   title: 'Test Master Release',
   year: 2024,
-  resource_url: 'https://api.discogs.com/masters/123',
-  uri: 'https://www.discogs.com/master/123',
+  resource_url: 'https://api.karakeep.app/api/v1/masters/123',
+  uri: 'https://www.karakeep.app/master/123',
   artists: [
     {
       id: 101,
       name: 'Test Artist',
-      resource_url: 'https://api.discogs.com/artists/101',
+      resource_url: 'https://api.karakeep.app/api/v1/artists/101',
       thumbnail_url: 'https://example.com/artist.jpg',
       join: '',
       anv: '',
@@ -39,7 +39,7 @@ const mockMasterRelease: MasterRelease = {
         {
           id: 102,
           name: 'Featured Artist',
-          resource_url: 'https://api.discogs.com/artists/102',
+          resource_url: 'https://api.karakeep.app/api/v1/artists/102',
           join: '',
           anv: '',
           role: 'Featured',
@@ -60,7 +60,7 @@ const mockMasterRelease: MasterRelease = {
     {
       type: 'primary',
       uri: 'https://example.com/image.jpg',
-      resource_url: 'https://api.discogs.com/images/123',
+      resource_url: 'https://api.karakeep.app/api/v1/images/123',
       uri150: 'https://example.com/image-150.jpg',
       width: 500,
       height: 500,
@@ -97,10 +97,10 @@ describe('MasterReleaseService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.get({ master_id: 999 })).rejects.toThrow('DiscogsResourceNotFoundError');
+      await expect(service.get({ master_id: 999 })).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -128,9 +128,9 @@ describe('MasterReleaseService', () => {
         pages: 2,
         items: 75,
         urls: {
-          first: 'https://api.discogs.com/masters/123/versions?page=1',
-          next: 'https://api.discogs.com/masters/123/versions?page=2',
-          last: 'https://api.discogs.com/masters/123/versions?page=2',
+          first: 'https://api.karakeep.app/api/v1/masters/123/versions?page=1',
+          next: 'https://api.karakeep.app/api/v1/masters/123/versions?page=2',
+          last: 'https://api.karakeep.app/api/v1/masters/123/versions?page=2',
         },
       },
       versions: [
@@ -144,7 +144,7 @@ describe('MasterReleaseService', () => {
           catno: 'TEST-001',
           released: '2024',
           status: 'Accepted',
-          resource_url: 'https://api.discogs.com/releases/456',
+          resource_url: 'https://api.karakeep.app/api/v1/releases/456',
           thumb: 'https://example.com/thumb.jpg',
           stats: {
             community: {
@@ -224,11 +224,11 @@ describe('MasterReleaseService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getVersions({ master_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 

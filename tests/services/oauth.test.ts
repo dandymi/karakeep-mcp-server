@@ -9,7 +9,7 @@ import type { DiscogsUserIdentity } from '../../src/types/oauth';
 const mockUserIdentity: DiscogsUserIdentity = {
   id: 123,
   username: 'testuser',
-  resource_url: 'https://api.discogs.com/users/testuser',
+  resource_url: 'https://api.karakeep.app/api/v1/users/testuser',
   consumer_name: 'Test Consumer',
 };
 
@@ -32,10 +32,10 @@ describe('OAuthService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getUserIdentity()).rejects.toThrow('DiscogsAuthenticationError');
+      await expect(service.getUserIdentity()).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle validation errors properly', async () => {

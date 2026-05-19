@@ -26,17 +26,17 @@ const mockLabel: Label = {
   parent_label: {
     id: 456,
     name: 'Parent Label',
-    resource_url: 'https://api.discogs.com/labels/456',
+    resource_url: 'https://api.karakeep.app/api/v1/labels/456',
   },
   sublabels: [
     {
       id: 789,
       name: 'Sub Label',
-      resource_url: 'https://api.discogs.com/labels/789',
+      resource_url: 'https://api.karakeep.app/api/v1/labels/789',
     },
   ],
-  uri: 'https://www.discogs.com/label/123',
-  releases_url: 'https://api.discogs.com/labels/123/releases',
+  uri: 'https://www.karakeep.app/label/123',
+  releases_url: 'https://api.karakeep.app/api/v1/labels/123/releases',
   data_quality: 'Correct',
 };
 
@@ -48,8 +48,8 @@ const mockReleases: LabelReleases = {
     per_page: 50,
     items: 1,
     urls: {
-      first: 'https://api.discogs.com/labels/123/releases?page=1',
-      last: 'https://api.discogs.com/labels/123/releases?page=1',
+      first: 'https://api.karakeep.app/api/v1/labels/123/releases?page=1',
+      last: 'https://api.karakeep.app/api/v1/labels/123/releases?page=1',
     },
   },
   releases: [
@@ -58,7 +58,7 @@ const mockReleases: LabelReleases = {
       title: 'Test Release',
       year: 2020,
       artist: 'Test Artist',
-      resource_url: 'https://api.discogs.com/releases/456',
+      resource_url: 'https://api.karakeep.app/api/v1/releases/456',
       thumb: 'https://example.com/thumb.jpg',
       format: 'Vinyl',
       label: 'Test Label',
@@ -99,10 +99,10 @@ describe('LabelService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.get({ label_id: 999 })).rejects.toThrow('DiscogsResourceNotFoundError');
+      await expect(service.get({ label_id: 999 })).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -168,7 +168,7 @@ describe('LabelService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -176,7 +176,7 @@ describe('LabelService', () => {
           label_id: 999,
           per_page: 50,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {

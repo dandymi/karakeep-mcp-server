@@ -13,8 +13,8 @@ const mockWantlist: UserWantlist = {
     per_page: 50,
     items: 1,
     urls: {
-      last: 'https://api.discogs.com/users/testuser/wants?page=1',
-      next: 'https://api.discogs.com/users/testuser/wants?page=1',
+      last: 'https://api.karakeep.app/api/v1/users/testuser/wants?page=1',
+      next: 'https://api.karakeep.app/api/v1/users/testuser/wants?page=1',
     },
   },
   wants: [
@@ -22,17 +22,17 @@ const mockWantlist: UserWantlist = {
       id: 123,
       rating: 5,
       notes: 'Test note',
-      resource_url: 'https://api.discogs.com/users/testuser/wants/123',
+      resource_url: 'https://api.karakeep.app/api/v1/users/testuser/wants/123',
       basic_information: {
         id: 123,
         title: 'Test Release',
         year: 2024,
-        resource_url: 'https://api.discogs.com/releases/123',
+        resource_url: 'https://api.karakeep.app/api/v1/releases/123',
         artists: [
           {
             id: 789,
             name: 'Test Artist',
-            resource_url: 'https://api.discogs.com/artists/789',
+            resource_url: 'https://api.karakeep.app/api/v1/artists/789',
             join: ',',
             anv: '',
             role: '',
@@ -43,7 +43,7 @@ const mockWantlist: UserWantlist = {
           {
             id: 101,
             name: 'Test Label',
-            resource_url: 'https://api.discogs.com/labels/101',
+            resource_url: 'https://api.karakeep.app/api/v1/labels/101',
             catno: 'TEST001',
           },
         ],
@@ -60,7 +60,7 @@ const mockWantlist: UserWantlist = {
         thumb: 'https://example.com/thumb.jpg',
         cover_image: 'https://example.com/cover.jpg',
         master_id: 202,
-        master_url: 'https://api.discogs.com/masters/202',
+        master_url: 'https://api.karakeep.app/api/v1/masters/202',
       },
     },
   ],
@@ -71,17 +71,17 @@ const mockWantlistItem: UserWantlistItem = {
   id: 123,
   rating: 5,
   notes: 'Test note',
-  resource_url: 'https://api.discogs.com/users/testuser/wants/123',
+  resource_url: 'https://api.karakeep.app/api/v1/users/testuser/wants/123',
   basic_information: {
     id: 123,
     title: 'Test Release',
     year: 2024,
-    resource_url: 'https://api.discogs.com/releases/123',
+    resource_url: 'https://api.karakeep.app/api/v1/releases/123',
     artists: [
       {
         id: 789,
         name: 'Test Artist',
-        resource_url: 'https://api.discogs.com/artists/789',
+        resource_url: 'https://api.karakeep.app/api/v1/artists/789',
         join: ',',
         anv: '',
         role: '',
@@ -92,7 +92,7 @@ const mockWantlistItem: UserWantlistItem = {
       {
         id: 101,
         name: 'Test Label',
-        resource_url: 'https://api.discogs.com/labels/101',
+        resource_url: 'https://api.karakeep.app/api/v1/labels/101',
         catno: 'TEST001',
       },
     ],
@@ -109,7 +109,7 @@ const mockWantlistItem: UserWantlistItem = {
     thumb: 'https://example.com/thumb.jpg',
     cover_image: 'https://example.com/cover.jpg',
     master_id: 202,
-    master_url: 'https://api.discogs.com/masters/202',
+    master_url: 'https://api.karakeep.app/api/v1/masters/202',
   },
 };
 
@@ -134,32 +134,32 @@ describe('UserWantsService', () => {
 
     it('should handle authentication errors', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.getList({ username: 'testuser', page: 1, per_page: 50 }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle permission errors', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.getList({ username: 'testuser', page: 1, per_page: 50 }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle resource not found errors', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.getList({ username: 'testuser', page: 1, per_page: 50 }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle network errors', async () => {
@@ -192,7 +192,7 @@ describe('UserWantsService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -202,12 +202,12 @@ describe('UserWantsService', () => {
           notes: 'Test note',
           rating: 5,
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -217,12 +217,12 @@ describe('UserWantsService', () => {
           notes: 'Test note',
           rating: 5,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -232,7 +232,7 @@ describe('UserWantsService', () => {
           notes: 'Test note',
           rating: 5,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -240,7 +240,7 @@ describe('UserWantsService', () => {
         id: 'not-a-number',
         rating: 5,
         notes: 'Test note',
-        resource_url: 'https://api.discogs.com/users/testuser/wants/123',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/wants/123',
         basic_information: mockWantlistItem.basic_information,
       };
       (service as any).request.mockResolvedValueOnce(invalidItem);
@@ -290,7 +290,7 @@ describe('UserWantsService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -300,12 +300,12 @@ describe('UserWantsService', () => {
           notes: 'Updated note',
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -315,12 +315,12 @@ describe('UserWantsService', () => {
           notes: 'Updated note',
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -330,7 +330,7 @@ describe('UserWantsService', () => {
           notes: 'Updated note',
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -338,7 +338,7 @@ describe('UserWantsService', () => {
         id: 'not-a-number',
         rating: 5,
         notes: 'Test note',
-        resource_url: 'https://api.discogs.com/users/testuser/wants/123',
+        resource_url: 'https://api.karakeep.app/api/v1/users/testuser/wants/123',
         basic_information: mockWantlistItem.basic_information,
       };
       (service as any).request.mockResolvedValueOnce(invalidItem);
@@ -384,7 +384,7 @@ describe('UserWantsService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -392,12 +392,12 @@ describe('UserWantsService', () => {
           username: 'testuser',
           release_id: 123,
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -405,12 +405,12 @@ describe('UserWantsService', () => {
           username: 'otheruser',
           release_id: 123,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -418,7 +418,7 @@ describe('UserWantsService', () => {
           username: 'nonexistent',
           release_id: 123,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle network errors properly', async () => {

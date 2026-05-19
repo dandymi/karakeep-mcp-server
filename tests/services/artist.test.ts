@@ -18,14 +18,14 @@ const mockArtist: Artist = {
     {
       id: 102,
       name: 'Test Alias',
-      resource_url: 'https://api.discogs.com/artists/102',
+      resource_url: 'https://api.karakeep.app/api/v1/artists/102',
     },
   ],
   members: [
     {
       id: 103,
       name: 'Test Member',
-      resource_url: 'https://api.discogs.com/artists/103',
+      resource_url: 'https://api.karakeep.app/api/v1/artists/103',
       active: true,
     },
   ],
@@ -39,8 +39,8 @@ const mockArtist: Artist = {
       uri150: 'https://example.com/artist-150.jpg',
     },
   ],
-  uri: 'https://www.discogs.com/artist/123',
-  releases_url: 'https://api.discogs.com/artists/123/releases',
+  uri: 'https://www.karakeep.app/artist/123',
+  releases_url: 'https://api.karakeep.app/api/v1/artists/123/releases',
   data_quality: 'Correct',
 };
 
@@ -52,8 +52,8 @@ const mockReleases: ArtistReleases = {
     per_page: 50,
     items: 1,
     urls: {
-      first: 'https://api.discogs.com/artists/123/releases?page=1',
-      last: 'https://api.discogs.com/artists/123/releases?page=1',
+      first: 'https://api.karakeep.app/api/v1/artists/123/releases?page=1',
+      last: 'https://api.karakeep.app/api/v1/artists/123/releases?page=1',
     },
   },
   releases: [
@@ -62,7 +62,7 @@ const mockReleases: ArtistReleases = {
       title: 'Test Release',
       year: 2020,
       artist: 'Test Artist',
-      resource_url: 'https://api.discogs.com/releases/456',
+      resource_url: 'https://api.karakeep.app/api/v1/releases/456',
       thumb: 'https://example.com/thumb.jpg',
       format: 'Vinyl',
       label: 'Test Label',
@@ -103,10 +103,10 @@ describe('ArtistService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.get({ artist_id: 999 })).rejects.toThrow('DiscogsResourceNotFoundError');
+      await expect(service.get({ artist_id: 999 })).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -172,7 +172,7 @@ describe('ArtistService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -180,7 +180,7 @@ describe('ArtistService', () => {
           artist_id: 999,
           per_page: 50,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {

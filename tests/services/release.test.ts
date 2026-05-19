@@ -10,12 +10,12 @@ const mockRelease: Release = {
   id: 123,
   title: 'Test Release',
   year: 2024,
-  resource_url: 'https://api.discogs.com/releases/123',
+  resource_url: 'https://api.karakeep.app/api/v1/releases/123',
   artists: [
     {
       id: 101,
       name: 'Test Artist',
-      resource_url: 'https://api.discogs.com/artists/101',
+      resource_url: 'https://api.karakeep.app/api/v1/artists/101',
       join: '',
       anv: '',
       role: 'Main',
@@ -26,7 +26,7 @@ const mockRelease: Release = {
     {
       id: 201,
       name: 'Test Label',
-      resource_url: 'https://api.discogs.com/labels/201',
+      resource_url: 'https://api.karakeep.app/api/v1/labels/201',
       catno: 'TEST001',
     },
   ],
@@ -51,7 +51,7 @@ const mockRelease: Release = {
     {
       type: 'primary',
       uri: 'https://example.com/image.jpg',
-      resource_url: 'https://api.discogs.com/images/123',
+      resource_url: 'https://api.karakeep.app/api/v1/images/123',
       uri150: 'https://example.com/image-150.jpg',
       width: 500,
       height: 500,
@@ -115,11 +115,11 @@ describe('ReleaseService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.get({ release_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 
@@ -153,12 +153,12 @@ describe('ReleaseService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.getRatingByUser({ username: 'testuser', release_id: 999 }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -199,7 +199,7 @@ describe('ReleaseService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -208,12 +208,12 @@ describe('ReleaseService', () => {
           release_id: 999,
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -222,12 +222,12 @@ describe('ReleaseService', () => {
           release_id: 999,
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -236,7 +236,7 @@ describe('ReleaseService', () => {
           release_id: 999,
           rating: 4,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle validation errors properly', async () => {
@@ -282,32 +282,32 @@ describe('ReleaseService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.deleteRatingByUser({ username: 'testuser', release_id: 999 }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.deleteRatingByUser({ username: 'testuser', release_id: 999 }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
         service.deleteRatingByUser({ username: 'testuser', release_id: 999 }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
 
     it('should handle network errors properly', async () => {
@@ -332,11 +332,11 @@ describe('ReleaseService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getCommunityRating({ release_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
 

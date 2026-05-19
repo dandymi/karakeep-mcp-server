@@ -6,8 +6,8 @@ import { MarketplaceService } from '../../src/services/marketplace.js';
 
 const mockListing = {
   id: 123,
-  resource_url: 'https://api.discogs.com/marketplace/listings/123',
-  uri: 'https://www.discogs.com/sell/item/123',
+  resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
+  uri: 'https://www.karakeep.app/sell/item/123',
   status: 'For Sale',
   condition: 'Very Good (VG)',
   sleeve_condition: 'Very Good (VG)',
@@ -47,16 +47,16 @@ const mockListing = {
       total: 100,
     },
     min_order_total: 0,
-    html_url: 'https://www.discogs.com/user/TestSeller',
+    html_url: 'https://www.karakeep.app/user/TestSeller',
     uid: 12345,
-    url: 'https://api.discogs.com/users/TestSeller',
+    url: 'https://api.karakeep.app/api/v1/users/TestSeller',
     payment: 'PayPal',
     shipping: 'Test shipping policy',
-    resource_url: 'https://api.discogs.com/users/TestSeller',
+    resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
   },
   release: {
     catalog_number: 'ABC123',
-    resource_url: 'https://api.discogs.com/releases/12345',
+    resource_url: 'https://api.karakeep.app/api/v1/releases/12345',
     year: 2020,
     id: 12345,
     description: 'Test Release - LP, Album',
@@ -85,7 +85,7 @@ const mockListing = {
 
 const mockListingNewResponse = {
   listing_id: 123,
-  resource_url: 'https://api.discogs.com/marketplace/listings/123',
+  resource_url: 'https://api.karakeep.app/api/v1/marketplace/listings/123',
 };
 
 describe('MarketplaceService', () => {
@@ -124,7 +124,7 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -135,12 +135,12 @@ describe('MarketplaceService', () => {
           price: 19.99,
           status: 'For Sale',
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -152,7 +152,7 @@ describe('MarketplaceService', () => {
           status: 'For Sale',
           format_quantity: 1,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
   });
 
@@ -169,31 +169,31 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.deleteListing({ listing_id: 123 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.deleteListing({ listing_id: 123 })).rejects.toThrow(
-        'DiscogsPermissionError',
+        'KarakeepPermissionError',
       );
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.deleteListing({ listing_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
   });
@@ -221,11 +221,11 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getListing({ listing_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
   });
@@ -257,7 +257,7 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -268,12 +268,12 @@ describe('MarketplaceService', () => {
           price: 19.99,
           status: 'For Sale',
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -285,12 +285,12 @@ describe('MarketplaceService', () => {
           status: 'For Sale',
           format_quantity: 1,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -301,16 +301,16 @@ describe('MarketplaceService', () => {
           price: 19.99,
           status: 'For Sale',
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
   });
 
   describe('getOrder', () => {
     const mockOrder = {
       id: 123,
-      resource_url: 'https://api.discogs.com/marketplace/orders/123',
-      messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-      uri: 'https://www.discogs.com/sell/order/123',
+      resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+      messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+      uri: 'https://www.karakeep.app/sell/order/123',
       status: 'New Order',
       next_status: ['Buyer Contacted', 'Invoice Sent'],
       fee: {
@@ -344,13 +344,13 @@ describe('MarketplaceService', () => {
       seller: {
         id: 12345,
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
       last_activity: '2024-04-15T18:43:39-07:00',
       buyer: {
         id: 67890,
         username: 'TestBuyer',
-        resource_url: 'https://api.discogs.com/users/TestBuyer',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
       },
       total: {
         currency: 'USD',
@@ -369,29 +369,29 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getOrder({ order_id: 123 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getOrder({ order_id: 123 })).rejects.toThrow('DiscogsPermissionError');
+      await expect(service.getOrder({ order_id: 123 })).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getOrder({ order_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
   });
@@ -399,9 +399,9 @@ describe('MarketplaceService', () => {
   describe('editOrder', () => {
     const mockOrder = {
       id: 123,
-      resource_url: 'https://api.discogs.com/marketplace/orders/123',
-      messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-      uri: 'https://www.discogs.com/sell/order/123',
+      resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+      messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+      uri: 'https://www.karakeep.app/sell/order/123',
       status: 'New Order' as const,
       next_status: ['Buyer Contacted' as const, 'Invoice Sent' as const],
       fee: {
@@ -435,13 +435,13 @@ describe('MarketplaceService', () => {
       seller: {
         id: 12345,
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
       last_activity: '2024-04-15T18:43:39-07:00',
       buyer: {
         id: 67890,
         username: 'TestBuyer',
-        resource_url: 'https://api.discogs.com/users/TestBuyer',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
       },
       total: {
         currency: 'USD' as const,
@@ -470,7 +470,7 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -478,12 +478,12 @@ describe('MarketplaceService', () => {
           order_id: 123,
           status: 'Buyer Contacted' as const,
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -491,12 +491,12 @@ describe('MarketplaceService', () => {
           order_id: 123,
           status: 'Buyer Contacted' as const,
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -504,7 +504,7 @@ describe('MarketplaceService', () => {
           order_id: 999,
           status: 'Buyer Contacted' as const,
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
   });
 
@@ -516,16 +516,16 @@ describe('MarketplaceService', () => {
         per_page: 50,
         items: 1,
         urls: {
-          last: 'https://api.discogs.com/marketplace/orders?page=1&per_page=50',
-          next: 'https://api.discogs.com/marketplace/orders?page=1&per_page=50',
+          last: 'https://api.karakeep.app/api/v1/marketplace/orders?page=1&per_page=50',
+          next: 'https://api.karakeep.app/api/v1/marketplace/orders?page=1&per_page=50',
         },
       },
       orders: [
         {
           id: 123,
-          resource_url: 'https://api.discogs.com/marketplace/orders/123',
-          messages_url: 'https://api.discogs.com/marketplace/orders/123/messages',
-          uri: 'https://www.discogs.com/sell/order/123',
+          resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
+          messages_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages',
+          uri: 'https://www.karakeep.app/sell/order/123',
           status: 'New Order' as const,
           next_status: ['Buyer Contacted' as const, 'Invoice Sent' as const],
           fee: {
@@ -559,13 +559,13 @@ describe('MarketplaceService', () => {
           seller: {
             id: 12345,
             username: 'TestSeller',
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
           },
           last_activity: '2024-04-15T18:43:39-07:00',
           buyer: {
             id: 67890,
             username: 'TestBuyer',
-            resource_url: 'https://api.discogs.com/users/TestBuyer',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestBuyer',
           },
           total: {
             currency: 'USD' as const,
@@ -617,18 +617,18 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getOrders({})).rejects.toThrow('DiscogsAuthenticationError');
+      await expect(service.getOrders({})).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
-      await expect(service.getOrders({})).rejects.toThrow('DiscogsPermissionError');
+      await expect(service.getOrders({})).rejects.toThrow('KarakeepPermissionError');
     });
   });
 
@@ -640,8 +640,8 @@ describe('MarketplaceService', () => {
         per_page: 50,
         items: 1,
         urls: {
-          last: 'https://api.discogs.com/marketplace/orders/123/messages?page=1&per_page=50',
-          next: 'https://api.discogs.com/marketplace/orders/123/messages?page=1&per_page=50',
+          last: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages?page=1&per_page=50',
+          next: 'https://api.karakeep.app/api/v1/marketplace/orders/123/messages?page=1&per_page=50',
         },
       },
       messages: [
@@ -651,19 +651,19 @@ describe('MarketplaceService', () => {
           type: 'message',
           order: {
             id: 123,
-            resource_url: 'https://api.discogs.com/marketplace/orders/123',
+            resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
           },
           subject: 'Test subject',
           from: {
             id: 12345,
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
             username: 'TestSeller',
             avatar_url: 'https://i.discogs.com/avatar.jpg',
           },
           status_id: 1,
           actor: {
             username: 'TestSeller',
-            resource_url: 'https://api.discogs.com/users/TestSeller',
+            resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
           },
         },
       ],
@@ -704,31 +704,31 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getOrderMessages({ order_id: 123 })).rejects.toThrow(
-        'DiscogsAuthenticationError',
+        'KarakeepAuthenticationError',
       );
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getOrderMessages({ order_id: 123 })).rejects.toThrow(
-        'DiscogsPermissionError',
+        'KarakeepPermissionError',
       );
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getOrderMessages({ order_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
   });
@@ -740,19 +740,19 @@ describe('MarketplaceService', () => {
       type: 'message',
       order: {
         id: 123,
-        resource_url: 'https://api.discogs.com/marketplace/orders/123',
+        resource_url: 'https://api.karakeep.app/api/v1/marketplace/orders/123',
       },
       subject: 'Test subject',
       from: {
         id: 12345,
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
         username: 'TestSeller',
         avatar_url: 'https://i.discogs.com/avatar.jpg',
       },
       status_id: 1,
       actor: {
         username: 'TestSeller',
-        resource_url: 'https://api.discogs.com/users/TestSeller',
+        resource_url: 'https://api.karakeep.app/api/v1/users/TestSeller',
       },
     };
 
@@ -794,7 +794,7 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs authentication errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsAuthenticationError';
+      discogsError.name = 'KarakeepAuthenticationError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -802,12 +802,12 @@ describe('MarketplaceService', () => {
           order_id: 123,
           message: 'Test message',
         }),
-      ).rejects.toThrow('DiscogsAuthenticationError');
+      ).rejects.toThrow('KarakeepAuthenticationError');
     });
 
     it('should handle Discogs permission errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsPermissionError';
+      discogsError.name = 'KarakeepPermissionError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -815,12 +815,12 @@ describe('MarketplaceService', () => {
           order_id: 123,
           message: 'Test message',
         }),
-      ).rejects.toThrow('DiscogsPermissionError');
+      ).rejects.toThrow('KarakeepPermissionError');
     });
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(
@@ -828,7 +828,7 @@ describe('MarketplaceService', () => {
           order_id: 999,
           message: 'Test message',
         }),
-      ).rejects.toThrow('DiscogsResourceNotFoundError');
+      ).rejects.toThrow('KarakeepResourceNotFoundError');
     });
   });
 
@@ -866,11 +866,11 @@ describe('MarketplaceService', () => {
 
     it('should handle Discogs resource not found errors properly', async () => {
       const discogsError = new Error('Discogs API Error');
-      discogsError.name = 'DiscogsResourceNotFoundError';
+      discogsError.name = 'KarakeepResourceNotFoundError';
       (service as any).request.mockRejectedValueOnce(discogsError);
 
       await expect(service.getReleaseStats({ release_id: 999 })).rejects.toThrow(
-        'DiscogsResourceNotFoundError',
+        'KarakeepResourceNotFoundError',
       );
     });
   });

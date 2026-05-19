@@ -1,7 +1,7 @@
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { FastMCP } from 'fastmcp';
 import { describe, expect, it, vi } from 'vitest';
-import { formatDiscogsError } from '../../src/errors.js';
+import { formatKarakeepError } from '../../src/errors.ts';
 import { UserWantsService } from '../../src/services/user/wants.js';
 import {
   addToWantlistTool,
@@ -15,20 +15,20 @@ const mockWantlistItem = {
   id: 123,
   rating: 5,
   notes: 'Test notes',
-  resource_url: 'https://api.discogs.com/users/testuser/wants/123',
+  resource_url: 'https://api.karakeep.app/api/v1/users/testuser/wants/123',
   basic_information: {
     id: 123,
     title: 'Test Release',
     year: 2024,
-    resource_url: 'https://api.discogs.com/releases/123',
-    thumb: 'https://api.discogs.com/releases/123/thumb',
-    cover_image: 'https://api.discogs.com/releases/123/image',
+    resource_url: 'https://api.karakeep.app/api/v1/releases/123',
+    thumb: 'https://api.karakeep.app/api/v1/releases/123/thumb',
+    cover_image: 'https://api.karakeep.app/api/v1/releases/123/image',
     formats: [{ name: 'Vinyl', qty: '1', text: '12"', descriptions: ['LP'] }],
     labels: [
       {
         id: 1,
         name: 'Test Label',
-        resource_url: 'https://api.discogs.com/labels/1',
+        resource_url: 'https://api.karakeep.app/api/v1/labels/1',
         catno: 'TEST001',
         entity_type: '1',
         entity_type_name: 'Label',
@@ -38,7 +38,7 @@ const mockWantlistItem = {
       {
         id: 1,
         name: 'Test Artist',
-        resource_url: 'https://api.discogs.com/artists/1',
+        resource_url: 'https://api.karakeep.app/api/v1/artists/1',
         join: ',',
         anv: '',
         role: '',
@@ -48,7 +48,7 @@ const mockWantlistItem = {
     genres: ['Electronic'],
     styles: ['House'],
     master_id: 202,
-    master_url: 'https://api.discogs.com/masters/202',
+    master_url: 'https://api.karakeep.app/api/v1/masters/202',
   },
 };
 
@@ -59,8 +59,8 @@ const mockWantlist = {
     per_page: 50,
     items: 1,
     urls: {
-      first: 'https://api.discogs.com/users/testuser/wants?page=1&per_page=50',
-      last: 'https://api.discogs.com/users/testuser/wants?page=1&per_page=50',
+      first: 'https://api.karakeep.app/api/v1/users/testuser/wants?page=1&per_page=50',
+      last: 'https://api.karakeep.app/api/v1/users/testuser/wants?page=1&per_page=50',
     },
   },
   wants: [mockWantlistItem],
@@ -134,7 +134,7 @@ describe('User Wantlist Tools', () => {
       });
     });
 
-    it('handles get_user_wantlist DiscogsResourceNotFoundError', async () => {
+    it('handles get_user_wantlist KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -143,7 +143,7 @@ describe('User Wantlist Tools', () => {
           });
 
           vi.spyOn(UserWantsService.prototype, 'getList').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(getUserWantlistTool);
@@ -260,7 +260,7 @@ describe('User Wantlist Tools', () => {
       });
     });
 
-    it('handles add_to_wantlist DiscogsResourceNotFoundError', async () => {
+    it('handles add_to_wantlist KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -269,7 +269,7 @@ describe('User Wantlist Tools', () => {
           });
 
           vi.spyOn(UserWantsService.prototype, 'addItem').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(addToWantlistTool);
@@ -388,7 +388,7 @@ describe('User Wantlist Tools', () => {
       });
     });
 
-    it('handles edit_item_in_wantlist DiscogsResourceNotFoundError', async () => {
+    it('handles edit_item_in_wantlist KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -397,7 +397,7 @@ describe('User Wantlist Tools', () => {
           });
 
           vi.spyOn(UserWantsService.prototype, 'editItem').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(editItemInWantlistTool);
@@ -514,7 +514,7 @@ describe('User Wantlist Tools', () => {
       });
     });
 
-    it('handles delete_item_in_wantlist DiscogsResourceNotFoundError', async () => {
+    it('handles delete_item_in_wantlist KarakeepResourceNotFoundError', async () => {
       await runWithTestServer({
         server: async () => {
           const server = new FastMCP({
@@ -523,7 +523,7 @@ describe('User Wantlist Tools', () => {
           });
 
           vi.spyOn(UserWantsService.prototype, 'deleteItem').mockRejectedValue(
-            formatDiscogsError('Resource not found'),
+            formatKarakeepError('Resource not found'),
           );
 
           server.addTool(deleteItemInWantlistTool);
